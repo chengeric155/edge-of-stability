@@ -220,6 +220,21 @@ body {
     font-size: 16px;
 }
 
+.author:nth-child(4) {
+    position: relative;
+}
+
+.author:nth-child(4)::after {
+    content: '';
+    position: absolute;
+    right: -37px;
+    /* half of the 75px gap */
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background-color: #8c4009;
+}
+
 /* Content Sections */
 .content-section {
     position: relative;
