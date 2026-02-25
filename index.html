@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 </head>
 <body>
     <div class="homepage">
@@ -72,8 +73,7 @@
                     <p>Sharpness & </p>
                     <p>Stability</p>
                 </div>
-                <p class="section-text">In deep learning, sharpness refers to the curvature of the loss landscape at a specific point. Mathematically, it is the maximum eigenvalue of the Hessian matrix, the second order derivative, of the loss function. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div>
+                <p class="section-text">In deep learning, <strong>sharpness</strong> refers to the curvature of the loss landscape at a specific point. Mathematically, it is the maximum eigenvalue of the Hessian matrix, the second order derivative, of the loss function. When training, a process called <strong>progressive sharpening</strong> occurs, in which the sharpness gradually increases. Progressive sharpening continues to occur until sharpness reaches a threshold of \(2 / \eta\), where \(\eta\) is the learning rate, where it then enters a regime called the <strong>edge of stability</strong>. This edge of stability is characterized by the stoppage of progressive sharpnening and sporadic oscillations in the still decreasing training loss.</div>
         </section>
 
         <!-- Quadratic Window -->
