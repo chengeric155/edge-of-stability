@@ -4,7 +4,7 @@ const ctx = canvas.getContext('2d');
 
 const COLS = 24;
 const ROWS = 7;
-const DOT_RADIUS = 3;
+const DOT_RADIUS = 4;
 
 let dots = [];
 let isHovered = false;
@@ -95,5 +95,7 @@ container.addEventListener('touchend', () => isHovered = false);
 
 window.addEventListener('resize', resize);
 
-resize();
-draw();
+document.fonts.ready.then(() => {
+    resize();
+    draw();
+});
