@@ -9,7 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&display=swap" rel="stylesheet">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 </head>
 <body>
     <div class="homepage">
@@ -80,10 +82,29 @@
         <section class="window-box">
             <h2 class="window-title">Sharpness and Learning Rate</h2>
             <div class="window-content">
-                <div class="placeholder-image">
-                    <p>quadratic plot</p>
+                <div class="interactive-plot-wrapper">
+                    <div class="plot-controls">
+                        <div class="control-group">
+                            <label>Learning Rate (\(\eta\)): <span id="lrVal">0.30</span></label>
+                            <input type="range" id="lrSlider" min="0.01" max="1.5" step="0.01" value="0.30">
+                        </div>
+                        <div class="control-group">
+                            <label>Sharpness (\(\lambda\)): <span id="sharpVal">5.0</span></label>
+                            <input type="range" id="sharpSlider" min="1" max="20" step="0.1" value="5.0">
+                        </div>
+                        <div class="status-indicator" id="statusIndicator">
+                            Status: <strong>Converging</strong> (Threshold: \(\eta < 0.40\))
+                        </div>
+                    </div>
+                    <div id="gdPlot" style="width:100%; height:350px;"></div>
                 </div>
-                <p class="window-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <div class="window-text">
+                    <p>Adjust the sliders to see how Gradient Descent behaves on a simple quadratic loss landscape: \(f(x) = \frac{1}{2} \lambda x^2\). By taking the second derivative, \(\frac{d^2f}{dx^2} = \lambda\), we see that sharpness is defined by \(\lambda\).</p>
+                    <p>&nbsp;</p>
+                    <p>Notice that as long as the learning rate \(\eta\) is strictly less than \(2/\lambda\), the optimizer successfully converges to the minimum at the bottom of the curve.</p>
+                    <p>&nbsp;</p>
+                    <p>However, if you push the learning rate or the sharpness too high so that \(\eta > 2/\lambda\), the updates become unstable. The optimizer overshoots the minimum by an increasingly large margin at each step, violently diverging up the walls of the loss landscape.</p>
+                </div>
             </div>
         </section>
 
@@ -135,10 +156,9 @@
         <section class="content-section">
             <h2 class="section-title">Adam</h2>
             <div class="section-text-full">
-                <p>Eu habitasse euismod hac natoque at ut eleifend posuere nam. Augue habitasse montes iaculis varius mattis montes dolor id venenatis sit. Mauris congue lorem iaculis; gravida magna faucibus. Sapien viverra cum massa penatibus diam eros maecenas congue ornare porta quisque. Auctor blandit vehicula sem felis rhoncus mauris aenean netus nibh justo. Natoque lectus pulvinar orci ultricies nisl mauris semper dictumst. Dui phasellus ac et habitant elit tincidunt montes lacus. Mus ipsum condimentum enim facilisis convallis at lorem netus.</p>
-                <p>&nbsp;</p>
-                <p>Mattis suscipit libero placerat egestas cursus quisque egestas maecenas. Facilisi facilisi euismod sem mauris eu ac lorem vivamus et posuere. Quam posuere porttitor nisi senectus pulvinar mollis tempor mauris massa nam. Condimentum fringilla pretium, nec lobortis vivamus mattis. Sollicitudin eleifend viverra et ridiculus vel egestas libero.</p>
-            </div>
+            <p>Adaptive gradient methods like <strong>Adam</strong> update parameters using a preconditioner that constantly adapts to the gradients from recent steps. Instead of being bounded by the raw curvature of the loss landscape, Adam trains at what is known as the "Adaptive Edge of Stability" (AEoS). During training, it is the maximum eigenvalue of the <em>preconditioned</em> Hessian, referred to as the preconditioned sharpness, that equilibrates at the stability threshold, \[\lambda_{\text{preconditioned max}} < \frac{(1+\beta_1)2}{(1-\beta_1)\eta}\]</p>
+            <p>&nbsp;</p>
+            <p>However, Adam's behavior fundamentally diverges from non-adaptive methods at this edge. [cite_start]While optimizers like full-batch Gradient Descent are physically blocked from entering excessively high-curvature regions of the loss landscape, Adam keeps advancing into them[cite: 16, 17]. [cite_start]It achieves this by dynamically adapting its preconditioner to compensate for the increasing curvature[cite: 17, 337]. [cite_start]Consequently, while Adam's preconditioned sharpness remains stable, the raw sharpness of the loss landscape continues to rise relentlessly throughout the training process[cite: 52, 361].</p>            </div>
             <div class="image-grid-3">
                 <div class="placeholder-image-small"></div>
                 <div class="placeholder-image-small"></div>
@@ -194,5 +214,6 @@
     </footer>
 
     <script src="scripts/dotgrid.js"></script>
+    <script src="scripts/quadratic_plot.js"></script>
 </body>
 </html>

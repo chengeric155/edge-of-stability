@@ -258,6 +258,7 @@ body {
     line-height: normal;
     color: black;
     width: 100%;
+    flex-shrink: 1;
 }
 
 .section-title-vertical {
@@ -276,7 +277,7 @@ body {
     flex: 1 0 0;
     min-height: 1px;
     min-width: 1px;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Castoro', serif;
     font-weight: 400;
     font-size: 16px;
     white-space: pre-wrap;
@@ -286,7 +287,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Castoro', serif;
     font-weight: 400;
     font-size: 16px;
     line-height: normal;
@@ -309,6 +310,7 @@ body {
     padding: 25px 75px;
     position: relative;
     flex-shrink: 0;
+    width: 60%;
     /* overflow: hidden;
     max-width: 100%;
     box-sizing: border-box; */
@@ -328,16 +330,18 @@ body {
     color: black;
     text-align: center;
     width: 100%;
+    padding-bottom: 1rem;
 }
 
 .window-content {
     display: flex;
-    flex: 1 0 auto;
-    gap: 50px;
-    align-items: center;
-    min-height: 1px;
-    min-width: 1px;
-    flex-wrap: wrap;
+    flex-direction: row;
+    /* Keep them side-by-side */
+    gap: 20px;
+    width: 100%;
+    align-items: flex-start;
+    overflow: hidden;
+    /* Prevents children from spilling out */
 }
 
 .window-content-vertical {
@@ -349,15 +353,11 @@ body {
 }
 
 .window-text {
-    font-family: 'Playfair Display', serif;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: normal;
-    color: black;
-    height: 300px;
-    width: 278px;
-    flex-shrink: 0;
-    white-space: pre-wrap;
+    flex: 1; 
+    min-width: 0; 
+    font-family: 'Hanken Grotesk', sans-serif;
+    line-height: 1.6;
+    padding-left: 1rem;
 }
 
 .window-text-vertical {
@@ -401,6 +401,43 @@ body {
     height: 200px;
     width: 300px;
     flex-shrink: 0;
+}
+
+.interactive-plot-wrapper {
+    background-color: #fafaf8;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding: 15px;
+    width: 100%;
+    max-width: 450px;
+    flex-shrink: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.plot-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 14px;
+}
+
+.control-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.control-group input[type="range"] {
+    width: 60%;
+}
+
+.status-indicator {
+    padding-top: 5px;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .image-grid-3 {
@@ -456,11 +493,21 @@ body {
 
 
 @media (max-width: 768px) {
+    .homepage {
+        width: 100vw;
+    }
+
+    .hero-content {
+        padding: 25px 50px;
+    }
     .hero-title-container {
         flex-direction: column;
         /* Stack title and image vertically */
         align-items: center;
         /* Center align the content */
+    }
+    .content-section {
+        padding: 25px 50px;
     }
 
     .dot-grid-container {
@@ -468,6 +515,30 @@ body {
         /* Add spacing between title and image */
         max-width: 90%;
         /* Adjust width for smaller screens */
+    }
+
+    .section-two-column {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .window-box {
+        width: 100%;
+        padding: 1rem;
+    }
+    .window-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .interactive-plot-wrapper {
+        max-width: 100%;
+        /* Take up full width of the window on mobile */
+    }
+
+    .window-text {
+        width: 100%;
+        padding-top: 20px;
     }
 
 
