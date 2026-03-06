@@ -156,13 +156,25 @@
         <section class="content-section">
             <h2 class="section-title">Adam</h2>
             <div class="section-text-full">
-            <p>Adaptive gradient methods like <strong>Adam</strong> update parameters using a preconditioner that constantly adapts to the gradients from recent steps. Instead of being bounded by the raw curvature of the loss landscape, Adam trains at what is known as the "Adaptive Edge of Stability" (AEoS). During training, it is the maximum eigenvalue of the <em>preconditioned</em> Hessian, referred to as the preconditioned sharpness, that equilibrates at the stability threshold, \[\lambda_{\text{preconditioned max}} < \frac{(1+\beta_1)2}{(1-\beta_1)\eta}\]</p>
-            <p>&nbsp;</p>
-            <p>However, Adam's behavior fundamentally diverges from non-adaptive methods at this edge. [cite_start]While optimizers like full-batch Gradient Descent are physically blocked from entering excessively high-curvature regions of the loss landscape, Adam keeps advancing into them[cite: 16, 17]. [cite_start]It achieves this by dynamically adapting its preconditioner to compensate for the increasing curvature[cite: 17, 337]. [cite_start]Consequently, while Adam's preconditioned sharpness remains stable, the raw sharpness of the loss landscape continues to rise relentlessly throughout the training process[cite: 52, 361].</p>            </div>
+                <p><strong>Adam</strong> is an adaptive optimizer that scales each parameter update using a preconditioner built from recent gradients. Unlike plain gradient descent, Adam is not limited by the raw curvature of the loss. It operates at the <strong>Adaptive Edge of Stability (AEoS)</strong>: the maximum eigenvalue of the <em>preconditioned</em> Hessian, called the preconditioned sharpness \(\lambda_A\), stays near the stability threshold</p>
+                <p class="section-text-equation">\[\lambda_{\text{preconditioned max}} < \frac{(1+\beta_1)2}{(1-\beta_1)\eta}\]</p>
+                <p>Here \(\eta\) is the learning rate and \(\beta_1\) is Adam’s first-moment decay, controlling how much weight recent gradients get in the momentum. At this edge, Adam can keep moving into high-curvature regions because it adapts the preconditioner to the landscape. Preconditioned sharpness stays bounded while the underlying loss sharpness can keep growing.</p>
+                <p>&nbsp;</p>
+                <p><strong>What the plots show.</strong> In each column, the top figure is train loss over steps and the bottom is preconditioned sharpness \(\lambda_A\). The left column varies the learning rate \(\eta\); the center column varies \(\beta_1\), so you can see how more or less momentum smoothing changes both the loss curve and the sharpness. The right column gives another view of the same kind of dynamics.</p>
+            </div>
             <div class="image-grid-3">
-                <div class="placeholder-image-small"></div>
-                <div class="placeholder-image-small"></div>
-                <div class="placeholder-image-small"></div>
+                <div class="plot-column">
+                    <img src="assets/plot1_training-30a3c965-444e-4519-a39f-915bf78d4a27.png" alt="Plot 1 — Train loss vs step (varying learning rate η)" />
+                    <img src="assets/plot1_preconditioned-1989a15f-412f-4b95-bbae-445b60319ce9.png" alt="Plot 1 — Preconditioned sharpness λ_A vs step" />
+                </div>
+                <div class="plot-column">
+                    <img src="assets/plot2_varyingB1-7d0541cf-3447-4282-b41a-9912b90e8153.png" alt="Plot 2 — Train loss vs step (varying β₁)" />
+                    <img src="assets/plot2_preconditioned-679265bd-56f4-4c0c-a3cc-37cb8238696f.png" alt="Plot 2 — Preconditioned sharpness λ_A vs step (varying β₁)" />
+                </div>
+                <div class="plot-column">
+                    <img src="assets/plot3_top-c2e22854-7b54-4c71-af5a-076c9290df73.png" alt="Plot 3 — Train loss vs step" />
+                    <img src="assets/plot3bottom-64ad7e16-187e-4639-a51e-7cbd659902f4.png" alt="Plot 3 — Preconditioned sharpness λ_A vs step" />
+                </div>
             </div>
         </section>
 
@@ -200,9 +212,11 @@
         <section class="content-section">
             <h2 class="section-title section-title-center">Conclusion</h2>
             <div class="section-text-full">
-                <p>Eu habitasse euismod hac natoque at ut eleifend posuere nam. Augue habitasse montes iaculis varius mattis montes dolor id venenatis sit. Mauris congue lorem iaculis; gravida magna faucibus. Sapien viverra cum massa penatibus diam eros maecenas congue ornare porta quisque. Auctor blandit vehicula sem felis rhoncus mauris aenean netus nibh justo. Natoque lectus pulvinar orci ultricies nisl mauris semper dictumst. Dui phasellus ac et habitant elit tincidunt montes lacus. Mus ipsum condimentum enim facilisis convallis at lorem netus.</p>
+                <p>Training deep networks is not just about driving the loss down. The curvature of the loss landscape, or sharpness, keeps changing as we train, and optimizers respond in different ways. We started from the idea that sharpness tends to rise until it hits a stability limit tied to the learning rate. That’s the edge of stability, and in practice you see it as loss curves that bounce around while still trending downward.</p>
                 <p>&nbsp;</p>
-                <p>Mattis suscipit libero placerat egestas cursus quisque egestas maecenas. Facilisi facilisi euismod sem mauris eu ac lorem vivamus et posuere. Quam posuere porttitor nisi senectus pulvinar mollis tempor mauris massa nam. Condimentum fringilla pretium, nec lobortis vivamus mattis. Sollicitudin eleifend viverra et ridiculus vel egestas libero.</p>
+                <p>Full-batch gradient descent rides that boundary. It pushes sharpness up until it sits at \(2/\eta\), then keeps going without blowing up. SGD does something similar, except the thing that matters is batch sharpness, not the Hessian over the full dataset. Adam is different. It adapts to the landscape, so its preconditioned sharpness stays near a different threshold and it can keep stepping into high-curvature regions while the raw sharpness of the loss keeps growing. The plots we showed let you see how \(\eta\) and \(\beta_1\) shape both the loss and the preconditioned sharpness over time. Muon and Shampoo take these ideas further with other preconditioning strategies.</p>
+                <p>&nbsp;</p>
+                <p>If you understand how each optimizer hits that edge, it’s easier to see why training looks the way it does and how to tune or design methods that are fast and stable. We hope this page gives you a clear picture of that.</p>
             </div>
         </section>
 
