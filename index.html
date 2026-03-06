@@ -156,24 +156,29 @@
         <section class="content-section">
             <h2 class="section-title">Adam</h2>
             <div class="section-text-full">
-                <p><strong>Adam</strong> is an adaptive optimizer that scales each parameter update using a preconditioner built from recent gradients. Unlike plain gradient descent, Adam is not limited by the raw curvature of the loss. It operates at the <strong>Adaptive Edge of Stability (AEoS)</strong>: the maximum eigenvalue of the <em>preconditioned</em> Hessian, called the preconditioned sharpness \(\lambda_A\), stays near the stability threshold</p>
+                <p><strong>Adam</strong> is an adaptive optimizer that scales each parameter update using a preconditioner built from recent gradients. Unlike plain gradient descent, Adam is not limited by the raw curvature of the loss. It operates at the <strong>Adaptive Edge of Stability (AEoS)</strong>, where the maximum eigenvalue of the <em>preconditioned</em> Hessian, called the preconditioned sharpness \(\lambda_A\), stays near the stability threshold</p>
                 <p class="section-text-equation">\[\lambda_{\text{preconditioned max}} < \frac{(1+\beta_1)2}{(1-\beta_1)\eta}\]</p>
-                <p>Here \(\eta\) is the learning rate and \(\beta_1\) is Adam’s first-moment decay, controlling how much weight recent gradients get in the momentum. At this edge, Adam can keep moving into high-curvature regions because it adapts the preconditioner to the landscape. Preconditioned sharpness stays bounded while the underlying loss sharpness can keep growing.</p>
+                <p>Here \(\eta\) is the learning rate and \(\beta_1\) is Adam’s first-moment decay, which controls how strongly recent gradients influence the momentum term. This is what lets Adam keep moving through high-curvature regions without becoming unstable in the same way as non-adaptive methods.</p>
                 <p>&nbsp;</p>
-                <p><strong>What the plots show.</strong> In each column, the top figure is train loss over steps and the bottom is preconditioned sharpness \(\lambda_A\). The left column varies the learning rate \(\eta\); the center column varies \(\beta_1\), so you can see how more or less momentum smoothing changes both the loss curve and the sharpness. The right column gives another view of the same kind of dynamics.</p>
+                <p><strong>What the plots show.</strong> The four smaller plots compare how changing the learning rate \(\eta\) and the momentum parameter \(\beta_1\) changes both train loss and preconditioned sharpness over time. The larger figure on the right highlights the main point more clearly: the solid curves show the raw sharpness \(\lambda_H\) continuing to rise, while the dashed curves show the preconditioned sharpness \(\lambda_A\) staying close to the edge. In other words, Adam keeps adapting as curvature grows, which is what makes its dynamics different.</p>
             </div>
-            <div class="image-grid-3">
-                <div class="plot-column">
-                    <img src="assets/plot1_training-30a3c965-444e-4519-a39f-915bf78d4a27.png" alt="Plot 1 — Train loss vs step (varying learning rate η)" />
-                    <img src="assets/plot1_preconditioned-1989a15f-412f-4b95-bbae-445b60319ce9.png" alt="Plot 1 — Preconditioned sharpness λ_A vs step" />
+            <div class="adam-visuals">
+                <div class="adam-top-plots">
+                    <div class="adam-top-plot-card">
+                        <img src="assets/plot1_training-30a3c965-444e-4519-a39f-915bf78d4a27.png" alt="Train loss vs step with varying learning rate η" />
+                    </div>
+                    <div class="adam-top-plot-card">
+                        <img src="assets/plot2_varyingB1-7d0541cf-3447-4282-b41a-9912b90e8153.png" alt="Train loss vs step with varying β₁" />
+                    </div>
+                    <div class="adam-top-plot-card">
+                        <img src="assets/plot1_preconditioned-1989a15f-412f-4b95-bbae-445b60319ce9.png" alt="Preconditioned sharpness λ_A vs step with varying learning rate η" />
+                    </div>
+                    <div class="adam-top-plot-card">
+                        <img src="assets/plot2_preconditioned-679265bd-56f4-4c0c-a3cc-37cb8238696f.png" alt="Preconditioned sharpness λ_A vs step with varying β₁" />
+                    </div>
                 </div>
-                <div class="plot-column">
-                    <img src="assets/plot2_varyingB1-7d0541cf-3447-4282-b41a-9912b90e8153.png" alt="Plot 2 — Train loss vs step (varying β₁)" />
-                    <img src="assets/plot2_preconditioned-679265bd-56f4-4c0c-a3cc-37cb8238696f.png" alt="Plot 2 — Preconditioned sharpness λ_A vs step (varying β₁)" />
-                </div>
-                <div class="plot-column">
-                    <img src="assets/plot3_top-c2e22854-7b54-4c71-af5a-076c9290df73.png" alt="Plot 3 — Train loss vs step" />
-                    <img src="assets/plot3bottom-64ad7e16-187e-4639-a51e-7cbd659902f4.png" alt="Plot 3 — Preconditioned sharpness λ_A vs step" />
+                <div class="adam-featured-plot">
+                    <img src="assets/fig8_sharpness_comparison.png" alt="Comparison showing raw sharpness λ_H rising while preconditioned sharpness λ_A stays near the edge across learning rates" />
                 </div>
             </div>
         </section>
@@ -229,5 +234,6 @@
 
     <script src="scripts/dotgrid.js"></script>
     <script src="scripts/quadratic_plot.js"></script>
+    <script src="scripts/scroll_reveal.js"></script>
 </body>
 </html>
