@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&display=swap" rel="stylesheet">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <div class="homepage">
@@ -129,10 +130,16 @@
             <div class="section-text-full">
                 <p>Unlike its full-batch counterpart, <strong>Stochastic Gradient Descent (SGD)</strong> approximates the true gradient by sampling a small subset of the data, or a "mini-batch," at each step. This introduces stochastic noise into the optimization process, defined by the update rule \(\theta_{t+1} = \theta_t - \eta \nabla L_B(\theta_t)\). In the context of the Edge of Stability, while full-batch GD is constrained by the maximum eigenvalue of the Hessian across the entire dataset, SGD interacts with the local <strong>batch sharpness</strong>, which measures the expected directional curvature of the mini-batch loss surface along the direction of the step. It is this batch sharpness, not the global sharpness, that ends up converging to the \(2 / \eta\) boundary under SGD.</p>            
             </div>
-            <div class="image-grid-3">
-                <div class="placeholder-image-small"></div>
-                <div class="placeholder-image-small"></div>
-                <div class="placeholder-image-small"></div>
+           <div class="image-grid-3" id="sgd-charts" style="flex-wrap:wrap;">
+                <div class="plot-column" style="flex:1;min-width:280px;max-width:380px;">
+                    <div id="sgd-loss-chart"></div>
+                </div>
+                <div class="plot-column" style="flex:1;min-width:280px;max-width:380px;">
+                    <div id="sgd-batch-chart"></div>
+                </div>
+                <div class="plot-column" style="flex:1;min-width:280px;max-width:380px;">
+                    <div id="sgd-full-chart"></div>
+                </div>
             </div>
 
             <div class="window-box">
@@ -235,5 +242,6 @@
     <script src="scripts/dotgrid.js"></script>
     <script src="scripts/quadratic_plot.js"></script>
     <script src="scripts/scroll_reveal.js"></script>
+    <script src="scripts/sgd_plot.js" defer></script>
 </body>
 </html>
