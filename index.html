@@ -170,22 +170,14 @@
                 <p><strong>What the plots show.</strong> The four smaller plots compare how changing the learning rate \(\eta\) and the momentum parameter \(\beta_1\) changes both train loss and preconditioned sharpness over time. The larger figure on the right highlights the main point more clearly: the solid curves show the raw sharpness \(\lambda_H\) continuing to rise, while the dashed curves show the preconditioned sharpness \(\lambda_A\) staying close to the edge. In other words, Adam keeps adapting as curvature grows, which is what makes its dynamics different.</p>
             </div>
             <div class="adam-visuals">
-                <div class="adam-top-plots">
-                    <div class="adam-top-plot-card">
-                        <img src="assets/plot1_training-30a3c965-444e-4519-a39f-915bf78d4a27.png" alt="Train loss vs step with varying learning rate η" />
-                    </div>
-                    <div class="adam-top-plot-card">
-                        <img src="assets/plot2_varyingB1-7d0541cf-3447-4282-b41a-9912b90e8153.png" alt="Train loss vs step with varying β₁" />
-                    </div>
-                    <div class="adam-top-plot-card">
-                        <img src="assets/plot1_preconditioned-1989a15f-412f-4b95-bbae-445b60319ce9.png" alt="Preconditioned sharpness λ_A vs step with varying learning rate η" />
-                    </div>
-                    <div class="adam-top-plot-card">
-                        <img src="assets/plot2_preconditioned-679265bd-56f4-4c0c-a3cc-37cb8238696f.png" alt="Preconditioned sharpness λ_A vs step with varying β₁" />
-                    </div>
+                <div class="adam-plot-row adam-featured-embed">
+                    <iframe src="assets/adam_lr.html" title="Adam: train loss and preconditioned sharpness vs learning rate η" class="adam-row-iframe"></iframe>
                 </div>
-                <div class="adam-featured-plot">
-                    <img src="assets/fig8_sharpness_comparison.png" alt="Comparison showing raw sharpness λ_H rising while preconditioned sharpness λ_A stays near the edge across learning rates" />
+                <div class="adam-plot-row adam-featured-embed">
+                    <iframe src="assets/adam_beta1.html" title="Adam: train loss and preconditioned sharpness vs β₁" class="adam-row-iframe"></iframe>
+                </div>
+                <div class="adam-plot-row adam-featured-embed">
+                    <iframe src="assets/combined_sharpness.html" title="Fig 8-style: λ_H rises while λ_A stays near edge" class="adam-row-iframe"></iframe>
                 </div>
             </div>
         </section>
