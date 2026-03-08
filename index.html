@@ -167,7 +167,7 @@
                 <p class="section-text-equation">\[\lambda_{\text{preconditioned max}} < \frac{(1+\beta_1)2}{(1-\beta_1)\eta}\]</p>
                 <p>Here \(\eta\) is the learning rate and \(\beta_1\) is Adam’s first-moment decay, which controls how strongly recent gradients influence the momentum term. This is what lets Adam keep moving through high-curvature regions without becoming unstable in the same way as non-adaptive methods.</p>
                 <p>&nbsp;</p>
-                <p><strong>What the plots show.</strong> The four smaller plots compare how changing the learning rate \(\eta\) and the momentum parameter \(\beta_1\) changes both train loss and preconditioned sharpness over time. The larger figure on the right highlights the main point more clearly: the solid curves show the raw sharpness \(\lambda_H\) continuing to rise, while the dashed curves show the preconditioned sharpness \(\lambda_A\) staying close to the edge. In other words, Adam keeps adapting as curvature grows, which is what makes its dynamics different.</p>
+                <p><strong>What the plots below show.</strong> The first two plots compare how changing the learning rate \(\eta\) and the momentum parameter \(\beta_1\) affect both train loss and preconditioned sharpness over time. The bottom plot highlights the main point: the solid curves show the raw sharpness \(\lambda_H\) continuing to rise, while the dashed curves show the preconditioned sharpness \(\lambda_A\) staying close to the edge. Adam keeps adapting as curvature grows, which is what makes its dynamics different.</p>
             </div>
             <div class="adam-visuals">
                 <div class="adam-plot-row adam-featured-embed">
