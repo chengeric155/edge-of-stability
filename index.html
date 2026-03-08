@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +7,13 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&display=swap" rel="stylesheet">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
-
 <body>
     <div class="homepage">
         <!-- Nav spacer -->
@@ -40,15 +35,10 @@
 
                 <div class="hero-text-wrapper">
                     <div class="hero-text">
-                        <p class="hero-description">Exploring the delicate balance between sharpness and stability in
-                            deep learning, expanding on prior research by investigating how modern optimizers interact
-                            with the edge of stability, and providing insights into how these dynamics influence
-                            training outcomes and generalization in deep neural networks.</p>
+                        <p class="hero-description">Exploring the delicate balance between sharpness and stability in deep learning, expanding on prior research by investigating how modern optimizers interact with the edge of stability, and providing insights into how these dynamics influence training outcomes and generalization in deep neural networks.</p>
                         <div class="button-group">
                             <button class="btn btn-primary">Report</button>
-                            <a class="btn btn-secondary"
-                                href="https://github.com/mfjacobsen/Investigating-NN-Optimizers" target="_blank"
-                                rel="noopener noreferrer">Code</a>
+                            <a class="btn btn-secondary" href="https://github.com/mfjacobsen/Investigating-NN-Optimizers" target="_blank" rel="noopener noreferrer">Code</a>
                         </div>
                     </div>
                 </div>
@@ -86,15 +76,7 @@
                     <p>Sharpness & </p>
                     <p>Stability</p>
                 </div>
-                <p class="section-text">In deep learning, <strong>sharpness</strong> refers to the curvature of the loss
-                    landscape at a specific point. Mathematically, it is the maximum eigenvalue of the Hessian matrix,
-                    the second order derivative, of the loss function. When training, a process called
-                    <strong>progressive sharpening</strong> occurs, in which the sharpness gradually increases.
-                    Progressive sharpening continues to occur until sharpness reaches a threshold of \(2 / \eta\), where
-                    \(\eta\) is the learning rate, where it then enters a regime called the <strong>edge of
-                        stability</strong>. This edge of stability is characterized by the stoppage of progressive
-                    sharpnening and sporadic oscillations in the still decreasing training loss.
-            </div>
+                <p class="section-text">In deep learning, <strong>sharpness</strong> refers to the curvature of the loss landscape at a specific point. Mathematically, it is the maximum eigenvalue of the Hessian matrix, the second order derivative, of the loss function. When training, a process called <strong>progressive sharpening</strong> occurs, in which the sharpness gradually increases. Progressive sharpening continues to occur until sharpness reaches a threshold of \(2 / \eta\), where \(\eta\) is the learning rate, where it then enters a regime called the <strong>edge of stability</strong>. This edge of stability is characterized by the stoppage of progressive sharpnening and sporadic oscillations in the still decreasing training loss.</div>
         </section>
 
         <!-- Quadratic Window -->
@@ -112,49 +94,28 @@
                             <input type="range" id="sharpSlider" min="1" max="20" step="0.1" value="6.0">
                         </div>
                         <div class="status-indicator" id="statusIndicator">
-                            Status: <strong>Converging</strong> (Threshold: \(\eta < 0.40\)) </div>
+                            Status: <strong>Converging</strong> (Threshold: \(\eta < 0.40\))
                         </div>
-                        <div id="gdPlot" style="width:100%; height:350px;"></div>
                     </div>
-                    <div class="window-text">
-                        <p>Adjust the sliders to see how Gradient Descent behaves on a simple quadratic loss landscape:
-                            \(f(x) = \frac{1}{2} \lambda x^2\). By taking the second derivative, \(\frac{d^2f}{dx^2} =
-                            \lambda\), we see that sharpness is defined by \(\lambda\).</p>
-                        <p>&nbsp;</p>
-                        <p>Notice that as long as the learning rate \(\eta\) is strictly less than \(2/\lambda\), the
-                            optimizer successfully converges to the minimum at the bottom of the curve.</p>
-                        <p>&nbsp;</p>
-                        <p>However, if you push the learning rate or the sharpness too high so that \(\eta >
-                            2/\lambda\), the updates become unstable. The optimizer overshoots the minimum by an
-                            increasingly large margin at each step, violently diverging up the walls of the loss
-                            landscape.</p>
-                    </div>
+                    <div id="gdPlot" style="width:100%; height:350px;"></div>
                 </div>
+                <div class="window-text">
+                    <p>Adjust the sliders to see how Gradient Descent behaves on a simple quadratic loss landscape: \(f(x) = \frac{1}{2} \lambda x^2\). By taking the second derivative, \(\frac{d^2f}{dx^2} = \lambda\), we see that sharpness is defined by \(\lambda\).</p>
+                    <p>&nbsp;</p>
+                    <p>Notice that as long as the learning rate \(\eta\) is strictly less than \(2/\lambda\), the optimizer successfully converges to the minimum at the bottom of the curve.</p>
+                    <p>&nbsp;</p>
+                    <p>However, if you push the learning rate or the sharpness too high so that \(\eta > 2/\lambda\), the updates become unstable. The optimizer overshoots the minimum by an increasingly large margin at each step, violently diverging up the walls of the loss landscape.</p>
+                </div>
+            </div>
         </section>
 
         <!-- Gradient Descent Section -->
         <section class="content-section">
             <h2 class="section-title">Gradient Descent</h2>
             <div class="section-text-full">
-                <p><strong>Gradient Descent (GD)</strong> is the foundational optimization algorithm used to train deep
-                    neural networks. It operates by calculating the gradient of the loss function with respect to the
-                    model's parameters across the entire training dataset. The network's parameters are then updated by
-                    taking a step in the direction of the steepest descent, scaled by a fixed learning rate, \(\eta\).
-                    Mathematically, this deterministic update rule is defined as \(\theta_{t+1} = \theta_t - \eta \nabla
-                    L(\theta_t)\). Note that while full-batch Gradient Descent is often too computationally expensive
-                    for modern, large-scale datasets, it is often used as the theoretical bedrock for analyzing
-                    convergence and training dynamics, as shown below.</p>
+                <p><strong>Gradient Descent (GD)</strong> is the foundational optimization algorithm used to train deep neural networks. It operates by calculating the gradient of the loss function with respect to the model's parameters across the entire training dataset. The network's parameters are then updated by taking a step in the direction of the steepest descent, scaled by a fixed learning rate, \(\eta\). Mathematically, this deterministic update rule is defined as \(\theta_{t+1} = \theta_t - \eta \nabla L(\theta_t)\). Note that while full-batch Gradient Descent is often too computationally expensive for modern, large-scale datasets, it is often used as the theoretical bedrock for analyzing convergence and training dynamics, as shown below.</p>
                 <p>&nbsp;</p>
-                <p>In the context of the Edge of Stability, full-batch GD exhibits counterintuitive behavior. Classical
-                    convex optimization theory dictates that GD will only converge stably if the learning rate is
-                    strictly bounded by the curvature of the loss landscape, specifically when \(\eta < 2 /
-                        \lambda_{max}\), where \(\lambda_{max}\) represents the sharpness. However, during the
-                        progressive sharpening phase of neural network training, GD naturally drives the loss
-                        landscape's curvature upward until it perfectly collides with this theoretical limit. Rather
-                        than diverging catastrophically when hitting \(2 / \eta\), GD rides this boundary. The optimizer
-                        enters the Edge of Stability, bouncing back and forth across the walls of the local minima,
-                        resulting in the non-monotonic but ultimately downward-trending loss curves characteristic of
-                        modern deep learning.</p>
+                <p>In the context of the Edge of Stability, full-batch GD exhibits counterintuitive behavior. Classical convex optimization theory dictates that GD will only converge stably if the learning rate is strictly bounded by the curvature of the loss landscape, specifically when \(\eta < 2 / \lambda_{max}\), where \(\lambda_{max}\) represents the sharpness. However, during the progressive sharpening phase of neural network training, GD naturally drives the loss landscape's curvature upward until it perfectly collides with this theoretical limit. Rather than diverging catastrophically when hitting \(2 / \eta\), GD rides this boundary. The optimizer enters the Edge of Stability, bouncing back and forth across the walls of the local minima, resulting in the non-monotonic but ultimately downward-trending loss curves characteristic of modern deep learning.</p>
             </div>
             <div class="image-grid-3">
                 <div class="placeholder-image-small"></div>
@@ -167,16 +128,9 @@
         <section class="content-section">
             <h2 class="section-title">Stochastic Gradient Descent</h2>
             <div class="section-text-full">
-                <p>Unlike its full-batch counterpart, <strong>Stochastic Gradient Descent (SGD)</strong> approximates
-                    the true gradient by sampling a small subset of the data, or a "mini-batch," at each step. This
-                    introduces stochastic noise into the optimization process, defined by the update rule \(\theta_{t+1}
-                    = \theta_t - \eta \nabla L_B(\theta_t)\). In the context of the Edge of Stability, while full-batch
-                    GD is constrained by the maximum eigenvalue of the Hessian across the entire dataset, SGD interacts
-                    with the local <strong>batch sharpness</strong>, which measures the expected directional curvature
-                    of the mini-batch loss surface along the direction of the step. It is this batch sharpness, not the
-                    global sharpness, that ends up converging to the \(2 / \eta\) boundary under SGD.</p>
+                <p>Unlike its full-batch counterpart, <strong>Stochastic Gradient Descent (SGD)</strong> approximates the true gradient by sampling a small subset of the data, or a "mini-batch," at each step. This introduces stochastic noise into the optimization process, defined by the update rule \(\theta_{t+1} = \theta_t - \eta \nabla L_B(\theta_t)\). In the context of the Edge of Stability, while full-batch GD is constrained by the maximum eigenvalue of the Hessian across the entire dataset, SGD interacts with the local <strong>batch sharpness</strong>, which measures the expected directional curvature of the mini-batch loss surface along the direction of the step. It is this batch sharpness, not the global sharpness, that ends up converging to the \(2 / \eta\) boundary under SGD.</p>            
             </div>
-            <div class="image-grid-3" id="sgd-charts" style="flex-wrap:wrap;">
+           <div class="image-grid-3" id="sgd-charts" style="flex-wrap:wrap;">
                 <div class="plot-column" style="flex:1;min-width:280px;max-width:380px;">
                     <div id="sgd-loss-chart"></div>
                 </div>
@@ -197,13 +151,9 @@
                     </div>
                     <div class="window-text">
                         <!-- <p>&nbsp;</p> -->
-                        <p>Sharpness seems to be influenced by the batch size, with larger batch sizes showcasing
-                            sharpness values closer to the stability boundary of \(2 / \eta\). Batch sizes also appears
-                            to have an inverted relationship on batch sharpness and full Hessian sharpness. Low batch
-                            sizes show higher batch sharpness values but lower full Hessian sharpness values.</p>
+                        <p>Sharpness seems to be influenced by the batch size, with larger batch sizes showcasing sharpness values closer to the stability boundary of \(2 / \eta\). Batch sizes also appears to have an inverted relationship on batch sharpness and full Hessian sharpness. Low batch sizes show higher batch sharpness values but lower full Hessian sharpness values.</p>
                         <p>&nbsp;</p>
-                        <p>Illustrated are 3 different batch sizes \(\mathcal{B}\) used to train the same model with a
-                            learning rate of \(\eta = 0.05\).</p>
+                        <p>Illustrated are 3 different batch sizes \(\mathcal{B}\) used to train the same model with a learning rate of \(\eta = 0.05\).</p>
                     </div>
                 </div>
             </div>
@@ -213,38 +163,21 @@
         <section class="content-section">
             <h2 class="section-title">Adam</h2>
             <div class="section-text-full">
-                <p><strong>Adam</strong> is an adaptive optimizer that scales each parameter update using a
-                    preconditioner built from recent gradients. Unlike plain gradient descent, Adam is not limited by
-                    the raw curvature of the loss. It operates at the <strong>Adaptive Edge of Stability
-                        (AEoS)</strong>, where the maximum eigenvalue of the <em>preconditioned</em> Hessian, called the
-                    preconditioned sharpness \(\lambda_A\), stays near the stability threshold</p>
-                <p class="section-text-equation">\[\lambda_{\text{preconditioned max}} <
-                        \frac{(1+\beta_1)2}{(1-\beta_1)\eta}\]</p>
-                        <p>Here \(\eta\) is the learning rate and \(\beta_1\) is Adam’s first-moment decay, which
-                            controls how strongly recent gradients influence the momentum term. This is what lets Adam
-                            keep moving through high-curvature regions without becoming unstable in the same way as
-                            non-adaptive methods.</p>
-                        <p>&nbsp;</p>
-                        <p><strong>What the plots below show.</strong> The first two figures compare how changing the
-                            learning rate \(\eta\) and the momentum parameter \(\beta_1\) affect both train loss and
-                            preconditioned sharpness over time. The bottom figure highlights the main point: the solid
-                            curves show the raw sharpness \(\lambda_H\) continuing to rise, while the dashed curves show
-                            the preconditioned sharpness \(\lambda_A\) staying close to the edge. Adam keeps adapting as
-                            curvature grows, which is what makes its dynamics different.</p>
+                <p><strong>Adam</strong> is an adaptive optimizer that scales each parameter update using a preconditioner built from recent gradients. Unlike plain gradient descent, Adam is not limited by the raw curvature of the loss. It operates at the <strong>Adaptive Edge of Stability (AEoS)</strong>, where the maximum eigenvalue of the <em>preconditioned</em> Hessian, called the preconditioned sharpness \(\lambda_A\), stays near the stability threshold</p>
+                <p class="section-text-equation">\[\lambda_{\text{preconditioned max}} < \frac{(1+\beta_1)2}{(1-\beta_1)\eta}\]</p>
+                <p>Here \(\eta\) is the learning rate and \(\beta_1\) is Adam’s first-moment decay, which controls how strongly recent gradients influence the momentum term. This is what lets Adam keep moving through high-curvature regions without becoming unstable in the same way as non-adaptive methods.</p>
+                <p>&nbsp;</p>
+                <p><strong>What the plots show.</strong> The four smaller plots compare how changing the learning rate \(\eta\) and the momentum parameter \(\beta_1\) changes both train loss and preconditioned sharpness over time. The larger figure on the right highlights the main point more clearly: the solid curves show the raw sharpness \(\lambda_H\) continuing to rise, while the dashed curves show the preconditioned sharpness \(\lambda_A\) staying close to the edge. In other words, Adam keeps adapting as curvature grows, which is what makes its dynamics different.</p>
             </div>
             <div class="adam-visuals">
                 <div class="adam-plot-row adam-featured-embed">
-                    <iframe src="assets/adam_lr.html"
-                        title="Adam: train loss and preconditioned sharpness vs learning rate η"
-                        class="adam-row-iframe"></iframe>
+                    <iframe src="assets/adam_lr.html" title="Adam: train loss and preconditioned sharpness vs learning rate η" class="adam-row-iframe"></iframe>
                 </div>
                 <div class="adam-plot-row adam-featured-embed">
-                    <iframe src="assets/adam_beta1.html" title="Adam: train loss and preconditioned sharpness vs β₁"
-                        class="adam-row-iframe"></iframe>
+                    <iframe src="assets/adam_beta1.html" title="Adam: train loss and preconditioned sharpness vs β₁" class="adam-row-iframe"></iframe>
                 </div>
                 <div class="adam-plot-row adam-featured-embed">
-                    <iframe src="assets/combined_sharpness.html"
-                        title="Fig 8-style: λ_H rises while λ_A stays near edge" class="adam-row-iframe"></iframe>
+                    <iframe src="assets/combined_sharpness.html" title="Fig 8-style: λ_H rises while λ_A stays near edge" class="adam-row-iframe"></iframe>
                 </div>
             </div>
         </section>
@@ -253,17 +186,9 @@
         <section class="content-section">
             <h2 class="section-title">Muon</h2>
             <div class="section-text-full">
-                <p>Eu habitasse euismod hac natoque at ut eleifend posuere nam. Augue habitasse montes iaculis varius
-                    mattis montes dolor id venenatis sit. Mauris congue lorem iaculis; gravida magna faucibus. Sapien
-                    viverra cum massa penatibus diam eros maecenas congue ornare porta quisque. Auctor blandit vehicula
-                    sem felis rhoncus mauris aenean netus nibh justo. Natoque lectus pulvinar orci ultricies nisl mauris
-                    semper dictumst. Dui phasellus ac et habitant elit tincidunt montes lacus. Mus ipsum condimentum
-                    enim facilisis convallis at lorem netus.</p>
+                <p>Eu habitasse euismod hac natoque at ut eleifend posuere nam. Augue habitasse montes iaculis varius mattis montes dolor id venenatis sit. Mauris congue lorem iaculis; gravida magna faucibus. Sapien viverra cum massa penatibus diam eros maecenas congue ornare porta quisque. Auctor blandit vehicula sem felis rhoncus mauris aenean netus nibh justo. Natoque lectus pulvinar orci ultricies nisl mauris semper dictumst. Dui phasellus ac et habitant elit tincidunt montes lacus. Mus ipsum condimentum enim facilisis convallis at lorem netus.</p>
                 <p>&nbsp;</p>
-                <p>Mattis suscipit libero placerat egestas cursus quisque egestas maecenas. Facilisi facilisi euismod
-                    sem mauris eu ac lorem vivamus et posuere. Quam posuere porttitor nisi senectus pulvinar mollis
-                    tempor mauris massa nam. Condimentum fringilla pretium, nec lobortis vivamus mattis. Sollicitudin
-                    eleifend viverra et ridiculus vel egestas libero.</p>
+                <p>Mattis suscipit libero placerat egestas cursus quisque egestas maecenas. Facilisi facilisi euismod sem mauris eu ac lorem vivamus et posuere. Quam posuere porttitor nisi senectus pulvinar mollis tempor mauris massa nam. Condimentum fringilla pretium, nec lobortis vivamus mattis. Sollicitudin eleifend viverra et ridiculus vel egestas libero.</p>
             </div>
             <div class="image-grid-3">
                 <div class="placeholder-image-small"></div>
@@ -276,17 +201,9 @@
         <section class="content-section">
             <h2 class="section-title">Shampoo</h2>
             <div class="section-text-full">
-                <p>Eu habitasse euismod hac natoque at ut eleifend posuere nam. Augue habitasse montes iaculis varius
-                    mattis montes dolor id venenatis sit. Mauris congue lorem iaculis; gravida magna faucibus. Sapien
-                    viverra cum massa penatibus diam eros maecenas congue ornare porta quisque. Auctor blandit vehicula
-                    sem felis rhoncus mauris aenean netus nibh justo. Natoque lectus pulvinar orci ultricies nisl mauris
-                    semper dictumst. Dui phasellus ac et habitant elit tincidunt montes lacus. Mus ipsum condimentum
-                    enim facilisis convallis at lorem netus.</p>
+                <p>Eu habitasse euismod hac natoque at ut eleifend posuere nam. Augue habitasse montes iaculis varius mattis montes dolor id venenatis sit. Mauris congue lorem iaculis; gravida magna faucibus. Sapien viverra cum massa penatibus diam eros maecenas congue ornare porta quisque. Auctor blandit vehicula sem felis rhoncus mauris aenean netus nibh justo. Natoque lectus pulvinar orci ultricies nisl mauris semper dictumst. Dui phasellus ac et habitant elit tincidunt montes lacus. Mus ipsum condimentum enim facilisis convallis at lorem netus.</p>
                 <p>&nbsp;</p>
-                <p>Mattis suscipit libero placerat egestas cursus quisque egestas maecenas. Facilisi facilisi euismod
-                    sem mauris eu ac lorem vivamus et posuere. Quam posuere porttitor nisi senectus pulvinar mollis
-                    tempor mauris massa nam. Condimentum fringilla pretium, nec lobortis vivamus mattis. Sollicitudin
-                    eleifend viverra et ridiculus vel egestas libero.</p>
+                <p>Mattis suscipit libero placerat egestas cursus quisque egestas maecenas. Facilisi facilisi euismod sem mauris eu ac lorem vivamus et posuere. Quam posuere porttitor nisi senectus pulvinar mollis tempor mauris massa nam. Condimentum fringilla pretium, nec lobortis vivamus mattis. Sollicitudin eleifend viverra et ridiculus vel egestas libero.</p>
             </div>
             <div class="image-grid-3">
                 <div class="placeholder-image-small"></div>
@@ -299,23 +216,11 @@
         <section class="content-section">
             <h2 class="section-title section-title-center">Conclusion</h2>
             <div class="section-text-full">
-                <p>Training deep networks is not just about driving the loss down. The curvature of the loss landscape,
-                    or sharpness, keeps changing as we train, and optimizers respond in different ways. We started from
-                    the idea that sharpness tends to rise until it hits a stability limit tied to the learning rate.
-                    That’s the edge of stability, and in practice you see it as loss curves that bounce around while
-                    still trending downward.</p>
+                <p>Training deep networks is not just about driving the loss down. The curvature of the loss landscape, or sharpness, keeps changing as we train, and optimizers respond in different ways. We started from the idea that sharpness tends to rise until it hits a stability limit tied to the learning rate. That’s the edge of stability, and in practice you see it as loss curves that bounce around while still trending downward.</p>
                 <p>&nbsp;</p>
-                <p>Full-batch gradient descent rides that boundary. It pushes sharpness up until it sits at \(2/\eta\),
-                    then keeps going without blowing up. SGD does something similar, except the thing that matters is
-                    batch sharpness, not the Hessian over the full dataset. Adam is different. It adapts to the
-                    landscape, so its preconditioned sharpness stays near a different threshold and it can keep stepping
-                    into high-curvature regions while the raw sharpness of the loss keeps growing. The plots we showed
-                    let you see how \(\eta\) and \(\beta_1\) shape both the loss and the preconditioned sharpness over
-                    time. Muon and Shampoo take these ideas further with other preconditioning strategies.</p>
+                <p>Full-batch gradient descent rides that boundary. It pushes sharpness up until it sits at \(2/\eta\), then keeps going without blowing up. SGD does something similar, except the thing that matters is batch sharpness, not the Hessian over the full dataset. Adam is different. It adapts to the landscape, so its preconditioned sharpness stays near a different threshold and it can keep stepping into high-curvature regions while the raw sharpness of the loss keeps growing. The plots we showed let you see how \(\eta\) and \(\beta_1\) shape both the loss and the preconditioned sharpness over time. Muon and Shampoo take these ideas further with other preconditioning strategies.</p>
                 <p>&nbsp;</p>
-                <p>If you understand how each optimizer hits that edge, it’s easier to see why training looks the way it
-                    does and how to tune or design methods that are fast and stable. We hope this page gives you a clear
-                    picture of that.</p>
+                <p>If you understand how each optimizer hits that edge, it’s easier to see why training looks the way it does and how to tune or design methods that are fast and stable. We hope this page gives you a clear picture of that.</p>
             </div>
         </section>
 
@@ -332,5 +237,4 @@
     <script src="scripts/sgd_plot.js" defer></script>
     <script src="scripts/sgd_plot_batch_sizes.js" defer></script>
 </body>
-
 </html>
