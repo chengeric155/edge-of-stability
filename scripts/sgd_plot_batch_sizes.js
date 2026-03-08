@@ -1,26 +1,26 @@
 (function () {
-    const MODEL_IDS = [6, 7, 8];
-    const COLORS = { 6: "#4a8fa8", 7: "#c4732d", 8: "#8c4009" };
-    const GREY = "#c0bdb9";
-    const FONT = "Hanken Grotesk, sans-serif";
+    const MODEL_IDS  = [12, 13, 14];
+    const BATCH_SIZES = { 12: 32, 13: 64, 14: 128 };
+    const COLORS     = { 12: "#4a8fa8", 13: "#c4732d", 14: "#8c4009" };
+    const GREY       = "#c0bdb9";
+    const FONT       = "Hanken Grotesk, sans-serif";
 
-    // ── Shared interaction state ──────────────────────────────────────────────
-    let selectedModel = null;  // null = all; modelId = isolated
-    let hoveredModelId = null;  // closest line to cursor Y
-    let hoveredEpochIdx = null;  // index into series arrays
-    let activeChartIdx = null;  // which chart the mouse is over
-    let leaveTimer = null;
+    // ── Shared state ──────────────────────────────────────────────────────────
+    let selectedModel   = null;
+    let hoveredModelId  = null;
+    let hoveredEpochIdx = null;
+    let activeChartIdx  = null;
+    let leaveTimer      = null;
 
-    const updaters = [];         // one fn per chart, called on any state change
+    const updaters = [];
 
-    // ── State helpers ─────────────────────────────────────────────────────────
     function lineOpacity(id) {
-        if (selectedModel !== null) return id === selectedModel ? 0.92 : 0.06;
-        if (hoveredModelId !== null) return id === hoveredModelId ? 0.92 : 0.18;
+        if (selectedModel   !== null) return id === selectedModel   ? 0.92 : 0.06;
+        if (hoveredModelId  !== null) return id === hoveredModelId  ? 0.92 : 0.18;
         return 0.88;
     }
     function lineStroke(id) {
-        if (selectedModel !== null && id !== selectedModel) return GREY;
+        if (selectedModel  !== null && id !== selectedModel)  return GREY;
         if (hoveredModelId !== null && id !== hoveredModelId) return GREY;
         return COLORS[id];
     }
@@ -34,52 +34,47 @@
     function initCharts() {
         if (typeof d3 === "undefined") { setTimeout(initCharts, 80); return; }
 
-        Promise.all([
-            d3.csv("data/sgd_metadata.csv"),
-            d3.csv("data/sgd_output.csv")
-        ]).then(([metadata, output]) => {
-
-            const lrMap = {};
-            metadata.forEach(row => {
-                const id = +row.model_id;
-                if (MODEL_IDS.includes(id)) lrMap[id] = +row.learning_rate;
-            });
+        d3.csv("data/sgd_output.csv").then(output => {
 
             const seriesMap = {};
             MODEL_IDS.forEach(id => {
-                seriesMap[id] = { epoch: [], loss: [], batch: [], full: [] };
+                seriesMap[id] = { epoch: [], batch: [], full: [] };
             });
             output.forEach(row => {
                 const id = +String(row.model_id).trim();
                 if (!MODEL_IDS.includes(id)) return;
                 seriesMap[id].epoch.push(+row.epoch);
-                seriesMap[id].loss.push(row.train_loss !== "" ? +row.train_loss : null);
                 seriesMap[id].batch.push(row.sharpness_H_batch !== "" ? +String(row.sharpness_H_batch).trim() : null);
-                seriesMap[id].full.push(row.sharpness_H_full !== "" ? +String(row.sharpness_H_full).trim() : null);
+                seriesMap[id].full.push(row.sharpness_H_full  !== "" ? +String(row.sharpness_H_full).trim()  : null);
             });
 
             const MODELS = MODEL_IDS.map(id => ({
-                id, lr: lrMap[id], label: "η = " + lrMap[id],
-                color: COLORS[id], thresh: 2 / lrMap[id], series: seriesMap[id]
+                id,
+                batchSize: BATCH_SIZES[id],
+                label: "B = " + BATCH_SIZES[id],
+                color: COLORS[id],
+                series: seriesMap[id]
             }));
 
-            [
-                { containerId: "sgd-loss-chart", title: "Train Loss", yKey: "loss", yLabel: "MSE Loss", yDomain: [0.0005, 0.5], thresholds: false, logScale: true },
-                { containerId: "sgd-batch-chart", title: "Batch Sharpness", yKey: "batch", yLabel: "Sharpness", yDomain: [0, 60], thresholds: true },
-                { containerId: "sgd-full-chart", title: "Full Hessian Sharpness", yKey: "full", yLabel: "Sharpness", yDomain: [0, 60], thresholds: true },
-            ].forEach((cfg, i) => drawChart({ ...cfg, models: MODELS, chartIdx: i }));
+            // 2/η threshold — all three models share lr=0.05
+            const THRESH = 2 / 0.05; // 40
 
-        }).catch(() => { });
+            [
+                { containerId: "batch-sharpness-chart", title: "Batch Sharpness",        yKey: "batch", yLabel: "Sharpness", yDomain: [20, 55], chartIdx: 0 },
+                { containerId: "batch-full-chart",      title: "Full Hessian Sharpness",  yKey: "full",  yLabel: "Sharpness", yDomain: [20, 45], chartIdx: 1 },
+            ].forEach(cfg => drawChart({ ...cfg, models: MODELS, thresh: THRESH }));
+
+        }).catch(() => {});
     }
 
     // ── Chart drawing ─────────────────────────────────────────────────────────
-    function drawChart({ containerId, title, yKey, yLabel, yDomain, thresholds, logScale, models, chartIdx }) {
+    function drawChart({ containerId, title, yKey, yLabel, yDomain, models, thresh, chartIdx }) {
         if (!document.getElementById(containerId)) return;
 
-        const W = 340, H = 280;
-        const M = { top: 38, right: 22, bottom: 72, left: 52 };
-        const iw = W - M.left - M.right;   // 266
-        const ih = H - M.top - M.bottom;  // 170
+        const W = 310, H = 235;
+        const M = { top: 36, right: 20, bottom: 50, left: 50 };
+        const iw = W - M.left - M.right;
+        const ih = H - M.top  - M.bottom;
 
         const svg = d3.select("#" + containerId).append("svg")
             .attr("width", W).attr("height", H)
@@ -89,30 +84,22 @@
             .style("display", "block")
             .style("cursor", "crosshair");
 
-        // Title
         svg.append("text")
             .attr("x", W / 2).attr("y", 22)
             .attr("text-anchor", "middle")
-            .attr("font-family", FONT).attr("font-weight", "500").attr("font-size", "13px")
+            .attr("font-family", FONT).attr("font-weight", "500").attr("font-size", "12.5px")
             .attr("fill", "#111827").text(title);
 
         const g = svg.append("g").attr("transform", `translate(${M.left},${M.top})`);
 
         const xScale = d3.scaleLinear().domain([1, 1000]).range([0, iw]);
-        const yScale = logScale
-            ? d3.scaleLog().domain(yDomain).range([ih, 0]).clamp(true)
-            : d3.scaleLinear().domain(yDomain).range([ih, 0]).clamp(true);
+        const yScale = d3.scaleLinear().domain(yDomain).range([ih, 0]).clamp(true);
         const bisect = d3.bisector(d => d).center;
         const epochs = models[0].series.epoch;
 
-        // Log tick formatter: use concise decimals (e.g. 0.001, 0.01, 0.1)
-        const yTickFormat = logScale
-            ? v => v < 0.01 ? d3.format(".0e")(v) : d3.format(".2~f")(v)
-            : null;
-
         // Grid
         g.append("g")
-            .call(d3.axisLeft(yScale).ticks(logScale ? 5 : 4, logScale ? yTickFormat : "").tickSize(-iw).tickFormat(""))
+            .call(d3.axisLeft(yScale).ticks(4).tickSize(-iw).tickFormat(""))
             .call(ax => ax.select(".domain").remove())
             .call(ax => ax.selectAll("line").attr("stroke", "#f0ebe5").attr("stroke-width", 1));
 
@@ -125,34 +112,34 @@
 
         // Y axis
         g.append("g")
-            .call(d3.axisLeft(yScale).ticks(logScale ? 5 : 4, logScale ? yTickFormat : undefined))
+            .call(d3.axisLeft(yScale).ticks(4))
             .call(ax => ax.select(".domain").attr("stroke", "#d4ccc5"))
             .call(ax => ax.selectAll("text").attr("font-family", FONT).attr("font-size", "10px").attr("fill", "#777"))
             .call(ax => ax.selectAll("line").attr("stroke", "#d4ccc5"));
 
         // Axis labels
-        g.append("text").attr("x", iw / 2).attr("y", ih + 33)
+        g.append("text").attr("x", iw / 2).attr("y", ih + 32)
             .attr("text-anchor", "middle").attr("font-family", FONT)
             .attr("font-size", "10px").attr("fill", "#999").text("Epoch");
         g.append("text").attr("transform", "rotate(-90)")
-            .attr("x", -ih / 2).attr("y", -38)
+            .attr("x", -ih / 2).attr("y", -36)
             .attr("text-anchor", "middle").attr("font-family", FONT)
             .attr("font-size", "10px").attr("fill", "#999").text(yLabel);
 
-        // Threshold dashed lines
-        if (thresholds) {
-            models.forEach(m => {
-                if (m.thresh <= yDomain[1] * 1.08) {
-                    g.append("line")
-                        .attr("x1", 0).attr("x2", iw)
-                        .attr("y1", yScale(m.thresh)).attr("y2", yScale(m.thresh))
-                        .attr("stroke", m.color).attr("stroke-width", 1)
-                        .attr("stroke-dasharray", "5,4").attr("opacity", 0.55);
-                }
-            });
+        // 2/η threshold line (shared — all models same lr)
+        if (thresh <= yDomain[1] * 1.08) {
+            g.append("line")
+                .attr("x1", 0).attr("x2", iw)
+                .attr("y1", yScale(thresh)).attr("y2", yScale(thresh))
+                .attr("stroke", "#aaa").attr("stroke-width", 1)
+                .attr("stroke-dasharray", "5,4").attr("opacity", 0.5);
+            g.append("text")
+                .attr("x", iw - 2).attr("y", yScale(thresh) - 4)
+                .attr("text-anchor", "end").attr("font-family", FONT)
+                .attr("font-size", "9px").attr("fill", "#aaa").text("2/η");
         }
 
-        // Data lines
+        // Lines
         const lineFn = d3.line()
             .x(d => xScale(d.e)).y(d => yScale(d.v))
             .defined(d => d.v != null && !isNaN(d.v))
@@ -174,7 +161,7 @@
                 });
         });
 
-        // Dots at hovered epoch (pre-created, hidden)
+        // Dots
         const dots = {};
         models.forEach(m => {
             dots[m.id] = g.append("circle")
@@ -183,15 +170,15 @@
                 .style("display", "none").style("pointer-events", "none");
         });
 
-        // Vertical cursor line
+        // Vertical cursor
         const cursor = g.append("line")
             .attr("y1", 0).attr("y2", ih)
             .attr("stroke", "#999").attr("stroke-width", 1)
             .attr("stroke-dasharray", "4,3")
             .style("display", "none").style("pointer-events", "none");
 
-        // ── Tooltip (pre-built, updated on hover) ─────────────────────────────
-        const TIP_W = 142, TIP_LINE = 15, TIP_PAD = 9;
+        // Tooltip
+        const TIP_W = 130, TIP_LINE = 15, TIP_PAD = 8;
         const tipG = svg.append("g").style("display", "none").style("pointer-events", "none");
         const tipBg = tipG.append("rect")
             .attr("rx", 5).attr("fill", "rgba(255,255,255,0.96)")
@@ -200,63 +187,47 @@
         const tipEpochText = tipG.append("text")
             .attr("font-family", FONT).attr("font-size", "10px")
             .attr("font-weight", "600").attr("fill", "#555");
-
-        // One row group per model (pre-created)
         const tipRows = models.map(m => {
             const rg = tipG.append("g");
-            rg.append("rect").attr("class", "swatch")
-                .attr("width", 8).attr("height", 8).attr("rx", 1.5).attr("y", -7);
-            rg.append("text").attr("class", "rowlabel")
-                .attr("x", 13).attr("font-family", FONT)
-                .attr("font-size", "9.5px").attr("fill", "#444");
+            rg.append("rect").attr("class", "swatch").attr("width", 8).attr("height", 8).attr("rx", 1.5).attr("y", -7);
+            rg.append("text").attr("class", "rowlabel").attr("x", 13)
+                .attr("font-family", FONT).attr("font-size", "9.5px").attr("fill", "#444");
             return { g: rg, modelId: m.id };
         });
 
-        // ── Legend ────────────────────────────────────────────────────────────
-        const legendY = M.top + ih + M.bottom - 17;
-        const legendG = svg.append("g").attr("transform", `translate(${M.left + 4},${legendY})`);
+        // Legend
+        const legendY = M.top + ih + M.bottom - 10;
+        const legendG = svg.append("g").attr("transform", `translate(${M.left + 2},${legendY})`);
         const legendItems = {};
-
         models.forEach((m, i) => {
-            const lx = i * 104;
+            const lx = i * 94;
             const ig = legendG.append("g")
                 .attr("transform", `translate(${lx},0)`)
                 .style("cursor", "pointer")
-                .on("click", () => {
-                    selectedModel = (selectedModel === m.id) ? null : m.id;
-                    broadcast();
-                })
-                .on("mouseenter", () => { hoveredModelId = m.id; broadcast(); })
-                .on("mouseleave", () => { hoveredModelId = null; broadcast(); });
-
-            ig.append("line")
-                .attr("x1", 0).attr("x2", 16).attr("y1", 0).attr("y2", 0)
+                .on("click", () => { selectedModel = (selectedModel === m.id) ? null : m.id; broadcast(); })
+                .on("mouseenter", () => { hoveredModelId = m.id;  broadcast(); })
+                .on("mouseleave", () => { hoveredModelId = null;  broadcast(); });
+            ig.append("line").attr("x1", 0).attr("x2", 16).attr("y1", 0).attr("y2", 0)
                 .attr("stroke", m.color).attr("stroke-width", 2);
-            ig.append("text")
-                .attr("x", 20).attr("y", 3.5)
-                .attr("font-family", FONT).attr("font-size", "9.5px").attr("fill", "#555")
-                .text(m.label);
-
+            ig.append("text").attr("x", 20).attr("y", 3.5)
+                .attr("font-family", FONT).attr("font-size", "9.5px").attr("fill", "#555").text(m.label);
             legendItems[m.id] = ig;
         });
 
-        // ── Mouse overlay ─────────────────────────────────────────────────────
+        // Mouse overlay
         g.append("rect")
             .attr("width", iw).attr("height", ih)
             .attr("fill", "none").attr("pointer-events", "all")
             .on("mousemove", function (event) {
                 clearTimeout(leaveTimer);
                 const [mx, my] = d3.pointer(event);
-                const nearestEpoch = xScale.invert(mx);
-                let idx = bisect(epochs, nearestEpoch);
+                let idx = bisect(epochs, xScale.invert(mx));
                 idx = Math.max(0, Math.min(idx, epochs.length - 1));
                 hoveredEpochIdx = idx;
-                activeChartIdx = chartIdx;
+                activeChartIdx  = chartIdx;
 
-                // Find model whose line is closest to cursor Y
                 const visibleModels = selectedModel !== null
-                    ? models.filter(m => m.id === selectedModel)
-                    : models;
+                    ? models.filter(m => m.id === selectedModel) : models;
                 let closestId = null, closestDist = Infinity;
                 visibleModels.forEach(m => {
                     const val = m.series[yKey][idx];
@@ -269,18 +240,14 @@
             })
             .on("mouseleave", function () {
                 leaveTimer = setTimeout(() => {
-                    hoveredEpochIdx = null;
-                    hoveredModelId = null;
-                    activeChartIdx = null;
+                    hoveredEpochIdx = null; hoveredModelId = null; activeChartIdx = null;
                     broadcast();
                 }, 40);
             });
 
-        // ── Update function ───────────────────────────────────────────────────
+        // Update function
         function update() {
             const isSource = activeChartIdx === chartIdx;
-
-            // Lines + legend
             models.forEach(m => {
                 paths[m.id].attr("stroke", lineStroke(m.id)).attr("opacity", lineOpacity(m.id));
                 legendItems[m.id].attr("opacity", legendOpacity(m.id));
@@ -290,70 +257,47 @@
                 const ep = epochs[hoveredEpochIdx];
                 const cx = xScale(ep);
 
-                // Cursor
-                cursor.style("display", null)
-                    .attr("x1", cx).attr("x2", cx)
+                cursor.style("display", null).attr("x1", cx).attr("x2", cx)
                     .attr("opacity", isSource ? 0.85 : 0.22);
 
-                // Dots
                 const visibleModels = selectedModel !== null
-                    ? models.filter(m => m.id === selectedModel)
-                    : models;
+                    ? models.filter(m => m.id === selectedModel) : models;
 
                 models.forEach(m => {
                     const val = m.series[yKey][hoveredEpochIdx];
                     const visible = visibleModels.includes(m) && val != null && !isNaN(val);
                     dots[m.id].style("display", visible ? null : "none");
                     if (visible) {
-                        dots[m.id]
-                            .attr("cx", cx).attr("cy", yScale(val))
-                            .attr("fill", lineStroke(m.id))
-                            .attr("opacity", lineOpacity(m.id));
+                        dots[m.id].attr("cx", cx).attr("cy", yScale(val))
+                            .attr("fill", lineStroke(m.id)).attr("opacity", lineOpacity(m.id));
                     }
                 });
 
-                // Tooltip — show on all charts at the shared epoch
-                const visibleModels2 = selectedModel !== null
-                    ? models.filter(m => m.id === selectedModel)
-                    : models;
-                const rows = visibleModels2
+                const rows = visibleModels
                     .map(m => ({ m, val: m.series[yKey][hoveredEpochIdx] }))
                     .filter(r => r.val != null && !isNaN(r.val));
 
                 if (rows.length > 0) {
                     const tipH = TIP_PAD * 2 + TIP_LINE * (rows.length + 1) - 2;
                     tipBg.attr("width", TIP_W).attr("height", tipH);
-
-                    tipEpochText
-                        .attr("x", TIP_PAD).attr("y", TIP_PAD + 9)
-                        .text("Epoch: " + ep);
-
-                    // Update pre-built rows
+                    tipEpochText.attr("x", TIP_PAD).attr("y", TIP_PAD + 9).text("Epoch: " + ep);
                     tipRows.forEach(tr => tr.g.style("display", "none"));
                     rows.forEach((row, i) => {
                         const tr = tipRows.find(t => t.modelId === row.m.id);
                         if (!tr) return;
                         const yOff = TIP_PAD + TIP_LINE * (i + 1) + 9;
-                        tr.g.style("display", null)
-                            .attr("transform", `translate(${TIP_PAD},${yOff})`);
+                        tr.g.style("display", null).attr("transform", `translate(${TIP_PAD},${yOff})`);
                         tr.g.select(".swatch").attr("fill", lineStroke(row.m.id));
-                        const valStr = yKey === "loss"
-                            ? row.val.toFixed(4)
-                            : row.val.toFixed(1);
                         tr.g.select(".rowlabel")
-                            .text(row.m.label + ":  " + valStr)
+                            .text(row.m.label + ":  " + row.val.toFixed(1))
                             .attr("fill", lineStroke(row.m.id));
                     });
-
-                    // Position: flip to left side when near right edge
                     const svgX = cx + M.left;
                     const tipX = (svgX + 14 + TIP_W > W - 4) ? svgX - TIP_W - 10 : svgX + 14;
-                    tipG.style("display", null)
-                        .attr("transform", `translate(${tipX},${M.top + 6})`);
+                    tipG.style("display", null).attr("transform", `translate(${tipX},${M.top + 4})`);
                 } else {
                     tipG.style("display", "none");
                 }
-
             } else {
                 cursor.style("display", "none");
                 tipG.style("display", "none");

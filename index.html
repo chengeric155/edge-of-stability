@@ -144,16 +144,16 @@
 
             <div class="window-box">
                 <h3 class="window-title">SGD on Varying Batch Sizes</h3>
-                <div class="window-content-vertical">
-                    <div class="image-stack">
-                        <div class="placeholder-image-small"></div>
-                        <div class="placeholder-image-small"></div>
+                <div class="window-content">
+                    <div class="batch-charts-stack">
+                        <div id="batch-sharpness-chart"></div>
+                        <div id="batch-full-chart"></div>
                     </div>
-                    <div class="window-text-vertical">
+                    <div class="window-text">
                         <!-- <p>&nbsp;</p> -->
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                        <p>Sharpness seems to be influenced by the batch size, with larger batch sizes showcasing sharpness values closer to the stability boundary of \(2 / \eta\). Batch sizes also appears to have an inverted relationship on batch sharpness and full Hessian sharpness. Low batch sizes show higher batch sharpness values but lower full Hessian sharpness values.</p>
                         <p>&nbsp;</p>
-                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
+                        <p>Illustrated are 3 different batch sizes \(\mathcal{B}\) used to train the same model with a learning rate of \(\eta = 0.05\).</p>
                     </div>
                 </div>
             </div>
@@ -243,5 +243,6 @@
     <script src="scripts/quadratic_plot.js"></script>
     <script src="scripts/scroll_reveal.js"></script>
     <script src="scripts/sgd_plot.js" defer></script>
+    <script src="scripts/sgd_plot_batch_sizes.js" defer></script>
 </body>
 </html>

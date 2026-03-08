@@ -320,9 +320,7 @@ body {
     position: relative;
     flex-shrink: 0;
     width: 60%;
-    /* overflow: hidden;
-    max-width: 100%;
-    box-sizing: border-box; */
+    margin: 0 auto;
 }
 
 .window-inline {
@@ -355,10 +353,12 @@ body {
 
 .window-content-vertical {
     display: flex;
+    flex-direction: row;
     gap: 26px;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    flex-shrink: 0;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .window-text {
@@ -373,16 +373,30 @@ body {
     font-family: 'Playfair Display', serif;
     font-weight: 400;
     font-size: 16px;
-    line-height: normal;
+    line-height: 1.6;
     color: black;
-    height: 417px;
-    width: 256px;
     flex-shrink: 0;
-    white-space: pre-wrap;
+    white-space: normal;
+    flex: 0 1 auto;
+    max-width: 256px;
 }
 
 .window-text-vertical p {
     margin: 0;
+}
+
+.batch-charts-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex-shrink: 0;
+    max-width: 100%;
+}
+
+.batch-charts-stack svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
 }
 
 /* Placeholder Images */
@@ -705,6 +719,10 @@ body {
         flex-direction: column;
         align-items: center;
     }
+
+    /*****************************
+        Adam Plots 
+    *****************************/
 
     .adam-top-plots {
         grid-template-columns: 1fr;
