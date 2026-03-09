@@ -186,9 +186,9 @@
         <section class="content-section">
             <h2 class="section-title">Muon</h2>
             <div class="section-text-full">
-                <p>Eu habitasse euismod hac natoque at ut eleifend posuere nam. Augue habitasse montes iaculis varius mattis montes dolor id venenatis sit. Mauris congue lorem iaculis; gravida magna faucibus. Sapien viverra cum massa penatibus diam eros maecenas congue ornare porta quisque. Auctor blandit vehicula sem felis rhoncus mauris aenean netus nibh justo. Natoque lectus pulvinar orci ultricies nisl mauris semper dictumst. Dui phasellus ac et habitant elit tincidunt montes lacus. Mus ipsum condimentum enim facilisis convallis at lorem netus.</p>
+                <p>Muon is a matrix-based optimizer designed for application to inner weight matrices of neural networks. Instead of adapting each parameter independently, Muon operates on the entire weight matrix of a layer and modifies the update using matrix structure. In particular, it first forms a momentum update and then orthogonalizes this update before applying it to the parameters.</p>
                 <p>&nbsp;</p>
-                <p>Mattis suscipit libero placerat egestas cursus quisque egestas maecenas. Facilisi facilisi euismod sem mauris eu ac lorem vivamus et posuere. Quam posuere porttitor nisi senectus pulvinar mollis tempor mauris massa nam. Condimentum fringilla pretium, nec lobortis vivamus mattis. Sollicitudin eleifend viverra et ridiculus vel egestas libero.</p>
+                <p>Muon shows some characteristics of the edge of stability regime like progressive sharpening and destabilization of the loss. However, there is a major difference with Muon is non-monotonic relationship between the learning rate and the maximum sharpness reached during training. In coordinate optimizers, this relationship is strictly inversely proportional: as the learning rate decreases, the network enters sharper regions of the loss landscape. While this relationship is true for very small Muon learning rates, it is the opposite for most learning rates. As learning rate increases, we see that the network can tolerate sharper loss regions.</p>
             </div>
             <div class="image-grid-3">
                 <div class="placeholder-image-small"></div>
