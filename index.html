@@ -201,8 +201,25 @@
         <section class="content-section">
             <h2 class="section-title">Shampoo</h2>
             <div class="section-text-full">
-                <p>Eu habitasse euismod hac natoque at ut eleifend posuere nam. Augue habitasse montes iaculis varius mattis montes dolor id venenatis sit. Mauris congue lorem iaculis; gravida magna faucibus. Sapien viverra cum massa penatibus diam eros maecenas congue ornare porta quisque. Auctor blandit vehicula sem felis rhoncus mauris aenean netus nibh justo. Natoque lectus pulvinar orci ultricies nisl mauris semper dictumst. Dui phasellus ac et habitant elit tincidunt montes lacus. Mus ipsum condimentum enim facilisis convallis at lorem netus.</p>
-                <p>&nbsp;</p>
+                <p>
+                <strong>Shampoo</strong> is a structured second-order optimizer that approximates curvature information while remaining practical for large neural networks. Instead of maintaining a full preconditioning matrix over all parameters, Shampoo factorizes the curvature along each tensor dimension. For a weight matrix \(W \in \mathbb{R}^{m \times n}\) with gradient \(G_t\), it accumulates second-moment statistics separately for the row and column directions:
+                </p>
+
+                <p class="section-text-equation">
+                \[
+                L_t = L_{t-1} + G_t G_t^\top,
+                \qquad
+                R_t = R_{t-1} + G_t^\top G_t
+                \]
+                </p>
+
+                <p>
+                These matrices act as left and right preconditioners that rescale the gradient during the update. The resulting update rule
+                \[
+                W_{t+1} = W_t - \eta \, L_t^{-1/4} \tilde{G}_t R_t^{-1/4}
+                \]
+                approximates the inverse square root of a Kronecker-factored curvature matrix. Because the gradient is rescaled differently along each dimension, Shampoo produces direction-dependent step sizes, allowing it to adapt to sharp and flat directions of the loss landscape more effectively than standard first-order methods.
+                </p>
                 <p>Mattis suscipit libero placerat egestas cursus quisque egestas maecenas. Facilisi facilisi euismod sem mauris eu ac lorem vivamus et posuere. Quam posuere porttitor nisi senectus pulvinar mollis tempor mauris massa nam. Condimentum fringilla pretium, nec lobortis vivamus mattis. Sollicitudin eleifend viverra et ridiculus vel egestas libero.</p>
             </div>
             <div class="image-grid-3">
