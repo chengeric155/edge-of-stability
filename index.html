@@ -205,12 +205,12 @@
                 L_t = L_{t-1} + G_t G_t^\top, \qquad R_t = R_{t-1} + G_t^\top G_t
                 \]</p>
                 <p>These matrices act as left and right preconditioners that rescale the gradient during the update. The resulting update rule \(W_{t+1} = W_t - \eta \, L_t^{-1/4} \tilde{G}_t R_t^{-1/4}\) approximates the inverse square root of a Kronecker-factored curvature matrix \(L_t^{1/2} \otimes R_t^{1/2}\). Because the gradient is rescaled differently along each dimension, Shampoo produces direction-dependent step sizes that help it adapt to sharp and flat directions of the loss landscape.</p>
-                <p>Mattis suscipit libero placerat egestas cursus quisque egestas maecenas. Facilisi facilisi euismod sem mauris eu ac lorem vivamus et posuere. Quam posuere porttitor nisi senectus pulvinar mollis tempor mauris massa nam. Condimentum fringilla pretium, nec lobortis vivamus mattis. Sollicitudin eleifend viverra et ridiculus vel egestas libero.</p>
+                <p>&nbsp;</p>
+                <p>Under our experimental conditions, the Shampoo optimizer does not exhibit the classical edge-of-stability phenomenon. Unlike SGD and Adam, Shampoo's sharpness decreases throughout training rather than increasing toward the stability threshold. This suggests that Shampoo's preconditioner suppresses updates in high-curvature directions rather than allowing sharpness to accumulate. Whether a different stability threshold governs Shampoo's dynamics remains an open question.</p>
             </div>
             <div class="image-grid-3">
-                <div class="placeholder-image-small"></div>
-                <div class="placeholder-image-small"></div>
-                <div class="placeholder-image-small"></div>
+                <img src="shampoo_loss_hessian.png" style="width:450px; height:300px; object-fit:contain; flex-shrink:0;">
+                <img src="shampoo_loss_precond.png" style="width:450px; height:300px; object-fit:contain; flex-shrink:0;">
             </div>
         </section>
 
