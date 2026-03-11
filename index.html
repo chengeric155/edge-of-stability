@@ -117,10 +117,13 @@
                 <p>&nbsp;</p>
                 <p>In the context of the Edge of Stability, full-batch GD exhibits counterintuitive behavior. Classical convex optimization theory dictates that GD will only converge stably if the learning rate is strictly bounded by the curvature of the loss landscape, specifically when \(\eta < 2 / \lambda_{max}\), where \(\lambda_{max}\) represents the sharpness. However, during the progressive sharpening phase of neural network training, GD naturally drives the loss landscape's curvature upward until it perfectly collides with this theoretical limit. Rather than diverging catastrophically when hitting \(2 / \eta\), GD rides this boundary. The optimizer enters the Edge of Stability, bouncing back and forth across the walls of the local minima, resulting in the non-monotonic but ultimately downward-trending loss curves characteristic of modern deep learning.</p>
             </div>
-            <div class="image-grid-3">
-                <div class="placeholder-image-small"></div>
-                <div class="placeholder-image-small"></div>
-                <div class="placeholder-image-small"></div>
+            <div class="image-grid-3" id="gd-charts">
+                <div class="plot-column" id="gd-loss-col">
+                    <div id="gd-loss-chart"></div>
+                </div>
+                <div class="plot-column" id="gd-sharp-col">
+                    <div id="gd-sharp-chart"></div>
+                </div>
             </div>
         </section>
 
@@ -236,6 +239,7 @@
     <script src="scripts/dotgrid.js"></script>
     <script src="scripts/quadratic_plot.js"></script>
     <script src="scripts/scroll_reveal.js"></script>
+    <script src="scripts/gd_plot.js" defer></script>
     <script src="scripts/sgd_plot.js" defer></script>
     <script src="scripts/sgd_plot_batch_sizes.js" defer></script>
 </body>

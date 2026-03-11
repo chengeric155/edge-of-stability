@@ -14,3 +14,6 @@ model_id,model_type,activation_function,optimizer,criterion,learning_rate,beta1,
 13,FullyConnectedNet,Tanh,SGD,MSELoss,0.05,,,1000,7.05
 14,FullyConnectedNet,Tanh,SGD,MSELoss,0.05,,,1000,4.05
 15,FullyConnectedNet,Tanh,SGD,MSELoss,0.05,,,1000,2.46
+16,FullyConnectedNet,Tanh,SGD,MSELoss,0.04,,,1000,3.47
+17,FullyConnectedNet,Tanh,SGD,MSELoss,0.0571428571428571,,,1000,3.96
+18,FullyConnectedNet,Tanh,SGD,MSELoss,0.1,,,1000,3.89

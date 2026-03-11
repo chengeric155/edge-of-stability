@@ -1,6 +1,6 @@
 (function () {
-    const MODEL_IDS = [6, 7, 8];
-    const COLORS = { 6: "#4a8fa8", 7: "#c4732d", 8: "#8c4009" };
+    const MODEL_IDS = [6, 17, 8];
+    const COLORS = { 6: "#4a8fa8", 17: "#c4732d", 8: "#8c4009" };
     const GREY = "#c0bdb9";
     const FONT = "Hanken Grotesk, sans-serif";
 
@@ -59,7 +59,7 @@
             });
 
             const MODELS = MODEL_IDS.map(id => ({
-                id, lr: lrMap[id], label: "η = " + lrMap[id],
+                id, lr: lrMap[id], label: "η = " + lrMap[id].toFixed(2),
                 color: COLORS[id], thresh: 2 / lrMap[id], series: seriesMap[id]
             }));
 
