@@ -76,7 +76,8 @@
                     <p>Sharpness & </p>
                     <p>Stability</p>
                 </div>
-                <p class="section-text">In deep learning, <strong>sharpness</strong> refers to the curvature of the loss landscape at a specific point. Mathematically, it is the maximum eigenvalue of the Hessian matrix, the second order derivative, of the loss function. When training, a process called <strong>progressive sharpening</strong> occurs, in which the sharpness gradually increases. Progressive sharpening continues to occur until sharpness reaches a threshold of \(2 / \eta\), where \(\eta\) is the learning rate, where it then enters a regime called the <strong>edge of stability</strong>. This edge of stability is characterized by the stoppage of progressive sharpnening and sporadic oscillations in the still decreasing training loss.</div>
+                    <p class="section-text">When training a model in deep learning, you may have noticed that at a certain point, training loss goes from smoothly decreasing to suddenly having these weird <i>“spikes”</i>. Research has linked these spikes to <strong>sharpness</strong>, a measure of the curvature of the loss landscape at a given point. Mathematically, sharpness, which we'll denote as \(\lambda_{\max}\), is the maximum eigenvalue of the Hessian matrix, the second order derivative, of the loss function. When training, a process called <strong>progressive sharpening</strong> occurs, in which the sharpness gradually increases. Progressive sharpening continues to occur until sharpness reaches a threshold of \(2/\eta\), where \(\eta\) is the learning rate, where it then enters a regime called the <strong>edge of stability</strong>. This edge of stability is characterized by the stoppage of progressive sharpening and sporadic oscillations in the still decreasing training loss.</p>
+                </div>
         </section>
 
         <!-- Quadratic Window -->
@@ -106,6 +107,31 @@
                     <p>&nbsp;</p>
                     <p>However, if you push the learning rate or the sharpness too high so that \(\eta > 2/\lambda\), the updates become unstable. The optimizer overshoots the minimum by an increasingly large margin at each step, violently diverging up the walls of the loss landscape.</p>
                 </div>
+            </div>
+        </section>
+
+        <!-- The Edge of Stability Paradox-->
+        <section class="content-section">
+            <h2 class="section-title section-title-center">The Edge of Stability Paradox</h2>
+            <div class="section-text-full">
+                <p>Conventional optimization theory states that in classic gradient descent, when sharpness exceeds \(2/\eta\), training should diverge, as shown in the interactive diagram above. However, this is not the case for deep learning models using gradient descent. In fact, upon breaching this \(2/\eta\) threshold, sharpness often lingers right at or just above the value of \(2/\eta\). And despite meeting and exceeding the threshold, training loss continues to decrease though with the aforementioned “spikes.” This means that the algorithm somehow successfully optimizes the training objective without increasing the sharpness.</p>
+                <p>&nbsp;</p>
+                <p>This counterintuitive behavior lends meaning to the name edge of stability, where the edge is a thin margin where training is most effective yet barely stable. Below this edge, learning is sluggish; above it, as in the case of an aggressively high learning rate, the optimizer diverges. It is only by navigating this threshold that the neural network actually trains in an efficient manner.</p>
+                <p>&nbsp;</p>
+                <p>The edge of stability has mainly focused on gradient descent as its primary optimizer. However, gradient descent is seldom used in real-world models. Therefore, this project attempts to establish the presence of the edge of stability to other contemporary optimizers including stochastic gradient descent, Adam, Muon, and Shampoo. We especially promote our analysis of matrix based optimizers of Muon and Shampoo, which has little to no research in regards to edge of stability.</p>
+            </div>
+        </section>
+
+        <!-- Methodology Section -->
+        <section class="content-section">
+            <h2 class="section-title">Methodology</h2>
+            <div class="section-text-image-row">
+                <div class="section-text-full">
+                    <p>To empirically investigate these optimization dynamics, we employed a standardized experimental framework. Our models were trained on a 5,000-image subset of the <a href="https://www.cs.toronto.edu/~kriz/cifar.html" target="_blank">CIFAR-10</a> dataset, consisting of \(32\times32\) RGB images across ten balanced classes. We utilized a fully connected neural network (MLP) architecture, optimized against a Mean Squared Error (MSE) objective function. To track the local geometry of the loss landscape, we utilized the Power Iteration method to provide a computationally efficient estimate of the Hessian's maximum eigenvalue, which serves as our proxy for sharpness. </p> 
+                    <p>&nbsp;</p>
+                    <p>The main hyperparameters are the learning rate \(\eta\) and optimizer choice, though batch size, epochs, and other settings also play a large role in our experiments. The specifics can be found in our <a href="https://github.com/mfjacobsen/Investigating-NN-Optimizers" target="_blank">codebase</a>.</p>
+                </div>
+                <img src="assets/cifar10.png" alt="CIFAR-10 Dataset samples" class="section-image">
             </div>
         </section>
 
@@ -238,7 +264,7 @@
 
     <script src="scripts/dotgrid.js"></script>
     <script src="scripts/quadratic_plot.js"></script>
-    <script src="scripts/scroll_reveal.js"></script>
+    <!-- <script src="scripts/scroll_reveal.js"></script> -->
     <script src="scripts/gd_plot.js" defer></script>
     <script src="scripts/sgd_plot.js" defer></script>
     <script src="scripts/sgd_plot_batch_sizes.js" defer></script>

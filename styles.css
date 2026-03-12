@@ -308,6 +308,23 @@ body {
     text-align: center;
 }
 
+.section-text-image-row {
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.section-text-image-row .section-text-full {
+    flex: 1;
+}
+
+.section-image {
+    width: 300px;
+    height: auto;
+    flex-shrink: 0;
+}
+
 /* Window Boxes */
 .window-box {
     background-color: white;
@@ -680,6 +697,15 @@ body {
         flex: 1;
         min-height: auto;
         text-align: center;
+    }
+    .section-text-image-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .section-image {
+        width: 100%;
+        max-width: 400px;
     }
 
     /*****************************
