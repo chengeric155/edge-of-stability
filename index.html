@@ -118,7 +118,8 @@
                 <p>&nbsp;</p>
                 <p class="callout">This counterintuitive behavior lends meaning to the name <i>edge of stability</i>, where the edge is a thin margin where training is most effective yet barely stable. Below this edge, learning is sluggish; above it, as in the case of an aggressively high learning rate, the optimizer diverges. It is only by navigating this threshold that the neural network actually trains in an efficient manner.</p>
                 <p>&nbsp;</p>
-                <p>The edge of stability has mainly focused on gradient descent as its primary optimizer. However, gradient descent is seldom used in real-world models. Therefore, this project attempts to establish the presence of the edge of stability to other contemporary optimizers including <strong>stochastic gradient descent, Adam, Muon, and Shampoo</strong>. We especially promote our analysis of <i>matrix based</i> optimizers of Muon and Shampoo, which has little to no research in regards to edge of stability.</p>
+                <h3 class="section-subtitle section-title-center">Our Objective</h3>
+                <p>The edge of stability has mainly focused on gradient descent as its primary optimizer. However, gradient descent is seldom used in real-world models. Therefore, this project attempts to establish the presence of the edge of stability to other contemporary optimizers including <strong>stochastic gradient descent, Adam, Muon, and Shampoo</strong>. We especially promote our analysis of <i>matrix based</i> optimizers of Muon and Shampoo, which has little to no research in regards to edge of stability. We hope this project helps introduce the idea of edge of stability and contributes to further research of optimization in deep learning.</p>
             </div>
         </section>
 
@@ -170,23 +171,22 @@
                     <div id="sgd-full-chart"></div>
                 </div>
             </div>
-
-            <div class="window-box">
-                <h3 class="window-title">SGD on Varying Batch Sizes</h3>
-                <div class="window-content">
-                    <div class="batch-charts-stack">
-                        <div id="batch-sharpness-chart"></div>
-                        <div id="batch-full-chart"></div>
-                    </div>
-                    <div class="window-text">
-                        <!-- <p>&nbsp;</p> -->
-                        <p>Sharpness seems to be influenced by the batch size, with larger batch sizes showcasing sharpness values closer to the stability boundary of \(2 / \eta\). Batch sizes also appears to have an inverted relationship on batch sharpness and full Hessian sharpness. Low batch sizes show higher batch sharpness values but lower full Hessian sharpness values.</p>
-                        <p>&nbsp;</p>
-                        <p>Illustrated are 3 different batch sizes \(\mathcal{B}\) used to train the same model with a learning rate of \(\eta = 0.05\).</p>
-                    </div>
+        </section>
+        <div class="window-box">
+            <h3 class="window-title">SGD on Varying Batch Sizes</h3>
+            <div class="window-content">
+                <div class="batch-charts-stack">
+                    <div id="batch-sharpness-chart"></div>
+                    <div id="batch-full-chart"></div>
+                </div>
+                <div class="window-text">
+                    <!-- <p>&nbsp;</p> -->
+                    <p>Sharpness seems to be influenced by the batch size, with larger batch sizes showcasing sharpness values closer to the stability boundary of \(2 / \eta\). Batch sizes also appears to have an inverted relationship on batch sharpness and full Hessian sharpness. Low batch sizes show higher batch sharpness values but lower full Hessian sharpness values.</p>
+                    <p>&nbsp;</p>
+                    <p>Illustrated are 3 different batch sizes \(\mathcal{B}\) used to train the same model with a learning rate of \(\eta = 0.05\).</p>
                 </div>
             </div>
-        </section>
+        </div>
 
         <!-- Adam Section -->
         <section class="content-section">
@@ -252,6 +252,20 @@
                 <p>Full-batch gradient descent rides that boundary. It pushes sharpness up until it sits at \(2/\eta\), then keeps going without blowing up. SGD does something similar, except the thing that matters is batch sharpness, not the Hessian over the full dataset. Adam is different. It adapts to the landscape, so its preconditioned sharpness stays near a different threshold and it can keep stepping into high-curvature regions while the raw sharpness of the loss keeps growing. The plots we showed let you see how \(\eta\) and \(\beta_1\) shape both the loss and the preconditioned sharpness over time. Muon and Shampoo take these ideas further with other preconditioning strategies.</p>
                 <p>&nbsp;</p>
                 <p>If you understand how each optimizer hits that edge, it’s easier to see why training looks the way it does and how to tune or design methods that are fast and stable. We hope this page gives you a clear picture of that.</p>
+            </div>
+        </section>
+
+        <!-- References Section -->
+        <section class="content-section">
+            <h2 class="section-title section-title-center">References</h2>
+            <div class="section-text-full">
+                <div class="reference">Andreyev, Arseniy, and Pierfrancesco Beneventano. 2025. "Edge of Stochastic Stability: Revisiting the Edge of Stability for SGD." <a href="https://arxiv.org/abs/2412.20553" target="_blank">[Link]</a></div>
+                
+                <div class="reference">Cohen, Jeremy, Simran Kaur, Yuanzhi Li, J. Zico Kolter, and Ameet Talwalkar. 2021. "Gradient Descent on Neural Networks Typically Occurs at the Edge of Stability." CoRR abs/2103.00065. <a href="https://arxiv.org/abs/2103.00065" target="_blank">[Link]</a></div>
+                
+                <div class="reference">Cohen, Jeremy M., Behrooz Ghorbani, Shankar Krishnan, Naman Agarwal, Sourabh Medapati, Michal Badura, Daniel Suo, David Cardoze, Zachary Nado, George E. Dahl, and Justin Gilmer. 2024. "Adaptive Gradient Methods at the Edge of Stability." <a href="https://arxiv.org/abs/2207.14484" target="_blank">[Link]</a></div>
+                
+                <div class="reference">Damian, Alex, Eshaan Nichani, and Jason D. Lee. 2023. "Self-Stabilization: The Implicit Bias of Gradient Descent at the Edge of Stability." <a href="https://arxiv.org/abs/2209.15594" target="_blank">[Link]</a></div>
             </div>
         </section>
 
