@@ -325,6 +325,18 @@ body {
     flex-shrink: 0;
 }
 
+.callout {
+    background-color: #f0f0f0;
+    border-left: 4px solid #8c4009;
+    padding: 15px 20px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: normal;
+    color: black;
+    width: 100%;
+}
+
 /* Window Boxes */
 .window-box {
     background-color: white;

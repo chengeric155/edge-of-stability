@@ -37,7 +37,7 @@
                     <div class="hero-text">
                         <p class="hero-description">Exploring the delicate balance between sharpness and stability in deep learning, expanding on prior research by investigating how modern optimizers interact with the edge of stability, and providing insights into how these dynamics influence training outcomes and generalization in deep neural networks.</p>
                         <div class="button-group">
-                            <button class="btn btn-primary">Report</button>
+                            <a class="btn btn-primary" href="https://drive.google.com/file/d/1sKMCWe193rx6oFQbGVvo48gOSK8s1hFE/view" target="_blank" rel="noopener noreferrer">Report</a>
                             <a class="btn btn-secondary" href="https://github.com/mfjacobsen/Investigating-NN-Optimizers" target="_blank" rel="noopener noreferrer">Code</a>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                     <p>Sharpness & </p>
                     <p>Stability</p>
                 </div>
-                    <p class="section-text">When training a model in deep learning, you may have noticed that at a certain point, training loss goes from smoothly decreasing to suddenly having these weird <i>“spikes”</i>. Research has linked these spikes to <strong>sharpness</strong>, a measure of the curvature of the loss landscape at a given point. Mathematically, sharpness, which we'll denote as \(\lambda_{\max}\), is the maximum eigenvalue of the Hessian matrix, the second order derivative, of the loss function. When training, a process called <strong>progressive sharpening</strong> occurs, in which the sharpness gradually increases. Progressive sharpening continues to occur until sharpness reaches a threshold of \(2/\eta\), where \(\eta\) is the learning rate, where it then enters a regime called the <strong>edge of stability</strong>. This edge of stability is characterized by the stoppage of progressive sharpening and sporadic oscillations in the still decreasing training loss.</p>
+                    <p class="section-text">When training a model in deep learning, you may have noticed that at a certain point, training loss goes from smoothly decreasing to suddenly having these weird <i>“spikes”</i>. Research has linked these spikes to <strong>sharpness</strong>, a measure of the curvature of the loss landscape at a given point. Mathematically, sharpness, which we'll denote as \(\lambda_{\max}\), is the maximum eigenvalue of the Hessian matrix, the second order derivative, of the loss function. When training, a process called <strong>progressive sharpening</strong> occurs, in which the sharpness gradually increases. Progressive sharpening continues to occur until sharpness reaches a threshold of \(2/\eta\), where \(\eta\) is the learning rate, as it then enters a regime called the <strong>edge of stability</strong>. This edge of stability is characterized by the stoppage of progressive sharpening and sporadic oscillations in the still decreasing training loss.</p>
                 </div>
         </section>
 
@@ -116,9 +116,9 @@
             <div class="section-text-full">
                 <p>Conventional optimization theory states that in classic gradient descent, when sharpness exceeds \(2/\eta\), training should diverge, as shown in the interactive diagram above. However, this is not the case for deep learning models using gradient descent. In fact, upon breaching this \(2/\eta\) threshold, sharpness often lingers right at or just above the value of \(2/\eta\). And despite meeting and exceeding the threshold, training loss continues to decrease though with the aforementioned “spikes.” This means that the algorithm somehow successfully optimizes the training objective without increasing the sharpness.</p>
                 <p>&nbsp;</p>
-                <p>This counterintuitive behavior lends meaning to the name edge of stability, where the edge is a thin margin where training is most effective yet barely stable. Below this edge, learning is sluggish; above it, as in the case of an aggressively high learning rate, the optimizer diverges. It is only by navigating this threshold that the neural network actually trains in an efficient manner.</p>
+                <p class="callout">This counterintuitive behavior lends meaning to the name <i>edge of stability</i>, where the edge is a thin margin where training is most effective yet barely stable. Below this edge, learning is sluggish; above it, as in the case of an aggressively high learning rate, the optimizer diverges. It is only by navigating this threshold that the neural network actually trains in an efficient manner.</p>
                 <p>&nbsp;</p>
-                <p>The edge of stability has mainly focused on gradient descent as its primary optimizer. However, gradient descent is seldom used in real-world models. Therefore, this project attempts to establish the presence of the edge of stability to other contemporary optimizers including stochastic gradient descent, Adam, Muon, and Shampoo. We especially promote our analysis of matrix based optimizers of Muon and Shampoo, which has little to no research in regards to edge of stability.</p>
+                <p>The edge of stability has mainly focused on gradient descent as its primary optimizer. However, gradient descent is seldom used in real-world models. Therefore, this project attempts to establish the presence of the edge of stability to other contemporary optimizers including <strong>stochastic gradient descent, Adam, Muon, and Shampoo</strong>. We especially promote our analysis of <i>matrix based</i> optimizers of Muon and Shampoo, which has little to no research in regards to edge of stability.</p>
             </div>
         </section>
 
@@ -129,7 +129,7 @@
                 <div class="section-text-full">
                     <p>To empirically investigate these optimization dynamics, we employed a standardized experimental framework. Our models were trained on a 5,000-image subset of the <a href="https://www.cs.toronto.edu/~kriz/cifar.html" target="_blank">CIFAR-10</a> dataset, consisting of \(32\times32\) RGB images across ten balanced classes. We utilized a fully connected neural network (MLP) architecture, optimized against a Mean Squared Error (MSE) objective function. To track the local geometry of the loss landscape, we utilized the Power Iteration method to provide a computationally efficient estimate of the Hessian's maximum eigenvalue, which serves as our proxy for sharpness. </p> 
                     <p>&nbsp;</p>
-                    <p>The main hyperparameters are the learning rate \(\eta\) and optimizer choice, though batch size, epochs, and other settings also play a large role in our experiments. The specifics can be found in our <a href="https://github.com/mfjacobsen/Investigating-NN-Optimizers" target="_blank">codebase</a>.</p>
+                    <p>The main hyperparameters are the learning rate \(\eta\) and optimizer choice, though batch size, epochs, and other settings also play a large role in our experiments. The specifics can be found in our <a href="https://github.com/mfjacobsen/Investigating-NN-Optimizers" target="_blank">codebase</a>. Additionally, our <a href="https://drive.google.com/file/d/1sKMCWe193rx6oFQbGVvo48gOSK8s1hFE/view" target="_blank" rel="noopener noreferrer">report</a> provides a more theoretical discussion of the findings, including the proofs, procedures, and analysis on additional optimizers.</p>
                 </div>
                 <img src="assets/cifar10.png" alt="CIFAR-10 Dataset samples" class="section-image">
             </div>
