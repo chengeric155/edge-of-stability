@@ -219,9 +219,16 @@
                 <p>&nbsp;</p>
                 <p>Muon shows some characteristics of the edge of stability regime like progressive sharpening and destabilization of the loss. However, there is a major difference with Muon is non-monotonic relationship between the learning rate and the maximum sharpness reached during training. In coordinate optimizers, this relationship is strictly inversely proportional: as the learning rate decreases, the network enters sharper regions of the loss landscape. While this relationship is true for very small Muon learning rates, it is the opposite for most learning rates. As learning rate increases, we see that the network can tolerate sharper loss regions.</p>
             </div>
-            <div class="image-grid-3" style="justify-content: center;">
-                <img src="assets/muon_fcnn_cifar10.png" style="max-width: 300px; height: auto;">
-                <img src="assets/muon_max_sharpness.png" style="max-width: 300px; height: auto;">
+            <div class="image-grid-3" id="muon-charts" style="flex-wrap:wrap;">
+                <div class="plot-column" style="flex:1;min-width:280px;max-width:380px;">
+                    <div id="muon-loss-chart"></div>
+                </div>
+                <div class="plot-column" style="flex:1;min-width:280px;max-width:380px;">
+                    <div id="muon-sharp-chart"></div>
+                </div>
+                <div class="plot-column" style="flex:1;min-width:280px;max-width:380px;">
+                    <div id="muon-scatter-chart"></div>
+                </div>
             </div>
         </section>
 
@@ -237,9 +244,16 @@
                 <p>&nbsp;</p>
                 <p>Under our experimental conditions, the Shampoo optimizer does not exhibit the classical edge-of-stability phenomenon. Unlike SGD and Adam, Shampoo's sharpness decreases throughout training rather than increasing toward the stability threshold. This suggests that Shampoo's preconditioner suppresses updates in high-curvature directions rather than allowing sharpness to accumulate. Whether a different stability threshold governs Shampoo's dynamics remains an open question.</p>
             </div>
-            <div class="image-grid-3">
-                <img src="assets/shampoo_loss_hessian.png" style="width:450px; height:300px; object-fit:contain; flex-shrink:0;">
-                <img src="assets/shampoo_loss_precond.png" style="width:450px; height:300px; object-fit:contain; flex-shrink:0;">
+            <div class="image-grid-3" id="shampoo-charts" style="flex-wrap:wrap;">
+                <div class="plot-column" style="flex:1;min-width:280px;max-width:380px;">
+                    <div id="shampoo-loss"></div>
+                </div>
+                <div class="plot-column" style="flex:1;min-width:280px;max-width:380px;">
+                    <div id="shampoo-sharp-h"></div>
+                </div>
+                <div class="plot-column" style="flex:1;min-width:280px;max-width:380px;">
+                    <div id="shampoo-sharp-p"></div>
+                </div>
             </div>
         </section>
 
@@ -259,13 +273,13 @@
         <section class="content-section">
             <h2 class="section-title section-title-center">References</h2>
             <div class="section-text-full">
-                <div class="reference">Andreyev, Arseniy, and Pierfrancesco Beneventano. 2025. "Edge of Stochastic Stability: Revisiting the Edge of Stability for SGD." <a href="https://arxiv.org/abs/2412.20553" target="_blank">[Link]</a></div>
+                <div class="reference"><strong>Andreyev, Arseniy, and Pierfrancesco Beneventano.</strong> 2025. "Edge of Stochastic Stability: Revisiting the Edge of Stability for SGD." <a href="https://arxiv.org/abs/2412.20553" target="_blank">[Link]</a></div>
                 
-                <div class="reference">Cohen, Jeremy, Simran Kaur, Yuanzhi Li, J. Zico Kolter, and Ameet Talwalkar. 2021. "Gradient Descent on Neural Networks Typically Occurs at the Edge of Stability." CoRR abs/2103.00065. <a href="https://arxiv.org/abs/2103.00065" target="_blank">[Link]</a></div>
+                <div class="reference"><strong>Cohen, Jeremy, Simran Kaur, Yuanzhi Li, J. Zico Kolter, and Ameet Talwalkar.</strong> 2021. "Gradient Descent on Neural Networks Typically Occurs at the Edge of Stability." CoRR abs/2103.00065. <a href="https://arxiv.org/abs/2103.00065" target="_blank">[Link]</a></div>
                 
-                <div class="reference">Cohen, Jeremy M., Behrooz Ghorbani, Shankar Krishnan, Naman Agarwal, Sourabh Medapati, Michal Badura, Daniel Suo, David Cardoze, Zachary Nado, George E. Dahl, and Justin Gilmer. 2024. "Adaptive Gradient Methods at the Edge of Stability." <a href="https://arxiv.org/abs/2207.14484" target="_blank">[Link]</a></div>
+                <div class="reference"><strong>Cohen, Jeremy M., Behrooz Ghorbani, Shankar Krishnan, Naman Agarwal, Sourabh Medapati, Michal Badura, Daniel Suo, David Cardoze, Zachary Nado, George E. Dahl, and Justin Gilmer.</strong> 2024. "Adaptive Gradient Methods at the Edge of Stability." <a href="https://arxiv.org/abs/2207.14484" target="_blank">[Link]</a></div>
                 
-                <div class="reference">Damian, Alex, Eshaan Nichani, and Jason D. Lee. 2023. "Self-Stabilization: The Implicit Bias of Gradient Descent at the Edge of Stability." <a href="https://arxiv.org/abs/2209.15594" target="_blank">[Link]</a></div>
+                <div class="reference"><strong>Damian, Alex, Eshaan Nichani, and Jason D. Lee.</strong> 2023. "Self-Stabilization: The Implicit Bias of Gradient Descent at the Edge of Stability." <a href="https://arxiv.org/abs/2209.15594" target="_blank">[Link]</a></div>
             </div>
         </section>
 
@@ -282,5 +296,7 @@
     <script src="scripts/gd_plot.js" defer></script>
     <script src="scripts/sgd_plot.js" defer></script>
     <script src="scripts/sgd_plot_batch_sizes.js" defer></script>
+    <script src="scripts/muon_plot.js" defer></script>
+    <script src="scripts/shampoo_plot.js" defer></script>
 </body>
 </html>

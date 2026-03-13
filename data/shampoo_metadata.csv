@@ -1,0 +1,6 @@
+model_id,model_type,activation_function,optimizer,criterion,learning_rate,beta1,beta2,num_epochs,time_minutes
+1,MLP4,relu,Shampoo,MSELoss,0.0005,,,500,5.84
+2,MLP4,relu,Shampoo,MSELoss,0.0007,,,500,5.76
+3,MLP4,relu,Shampoo,MSELoss,0.001,,,500,5.76
+4,MLP4,relu,Shampoo,MSELoss,0.0015,,,500,6.26
+5,MLP4,relu,Shampoo,MSELoss,0.002,,,500,6.07
