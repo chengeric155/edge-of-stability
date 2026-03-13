@@ -71,7 +71,7 @@
     function drawChart({ containerId, title, yKey, yLabel, yDomain, models, thresh, chartIdx }) {
         if (!document.getElementById(containerId)) return;
 
-        const W = 310, H = 235;
+        const W = 340, H = 280;
         const M = { top: 36, right: 20, bottom: 50, left: 50 };
         const iw = W - M.left - M.right;
         const ih = H - M.top  - M.bottom;
