@@ -198,15 +198,29 @@
                 <p>&nbsp;</p>
                 <p><strong>What the plots below show.</strong> The first two plots compare how changing the learning rate \(\eta\) and the momentum parameter \(\beta_1\) affect both train loss and preconditioned sharpness over time. The bottom plot highlights the main point: the solid curves show the raw sharpness \(\lambda_H\) continuing to rise, while the dashed curves show the preconditioned sharpness \(\lambda_A\) staying close to the edge. Adam keeps adapting as curvature grows, which is what makes its dynamics different.</p>
             </div>
-            <div class="adam-visuals">
-                <div class="adam-plot-row adam-featured-embed">
-                    <iframe src="assets/adam_lr.html" title="Adam: train loss and preconditioned sharpness vs learning rate η" class="adam-row-iframe"></iframe>
+
+            <div class="image-grid-3" id="adam-charts">
+                <div class="plot-column" id="adam-eta-loss-col">
+                    <div id="adam-eta-loss"></div>
                 </div>
-                <div class="adam-plot-row adam-featured-embed">
-                    <iframe src="assets/adam_beta1.html" title="Adam: train loss and preconditioned sharpness vs β₁" class="adam-row-iframe"></iframe>
+                <div class="plot-column" id="adam-eta-sharp-col">
+                    <div id="adam-eta-sharp"></div>
                 </div>
-                <div class="adam-plot-row adam-featured-embed">
-                    <iframe src="assets/combined_sharpness.html" title="Fig 8-style: λ_H rises while λ_A stays near edge" class="adam-row-iframe"></iframe>
+            </div>
+            <div class="image-grid-3" id="adam-charts">
+                <div class="plot-column" id="adam-beta-loss-col">
+                    <div id="adam-beta-loss"></div>
+                </div>
+                <div class="plot-column" id="adam-beta-sharp-col">
+                    <div id="adam-beta-sharp"></div>
+                </div>
+            </div>
+            <div class="image-grid-3" id="adam-charts">
+                <div class="plot-column" id="gd-loss-col">
+                    <div id="adam-precond-raw"></div>
+                </div>
+                <div class="plot-column" id="gd-sharp-col">
+                    <div id="adam-precond-scaled"></div>
                 </div>
             </div>
         </section>
@@ -296,6 +310,7 @@
     <script src="scripts/gd_plot.js" defer></script>
     <script src="scripts/sgd_plot.js" defer></script>
     <script src="scripts/sgd_plot_batch_sizes.js" defer></script>
+    <script src="scripts/adam_plot.js" defer></script>
     <script src="scripts/muon_plot.js" defer></script>
     <script src="scripts/shampoo_plot.js" defer></script>
 </body>
